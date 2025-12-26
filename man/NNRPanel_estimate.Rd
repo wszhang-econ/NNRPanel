@@ -29,7 +29,7 @@ data-driven value is computed internally via
 \code{func}, \code{delta}, \code{R_max}, \code{s}, \code{iter_max}, and
 \code{tol}.}
 
-\item{func}{A character string indicating the outcome model:
+\item{func}{A character string indicating the outcome model: \code{"linear"} for linear regression,
 \code{"logit"} for logistic regression, \code{"probit"} for Probit regression, and \code{"poisson"} for Poisson
 regression.}
 

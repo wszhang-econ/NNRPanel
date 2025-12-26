@@ -2,6 +2,7 @@
 #include "mathfunc_logit.h"
 #include "mathfunc_poisson.h"
 #include "mathfunc_probit.h"
+#include "mathfunc_linear.h"
 
 
 
@@ -866,6 +867,144 @@ List MLE_probit(const List & X,  const NumericMatrix & Y,
 }
 
 
+// [[Rcpp::export]]
+
+List fit_linear(const List & X,  const NumericMatrix & Y, const double phi,  
+                const double s, const int iter_max, const double tol){
+    
+    const Map<MatrixXd> Y_(as<Map<MatrixXd>> (Y));
+    
+    NumericMatrix Theta_new =  wrap(MatrixXd::Constant(Y_.rows(), Y_.cols(), 0));
+    NumericMatrix Theta_old =  wrap(MatrixXd::Constant(Y_.rows(), Y_.cols(), 0));
+    NumericVector beta_new = wrap(VectorXd::Constant(X.length(),0));
+    NumericVector beta_old = wrap(VectorXd::Constant(X.length(),0));
+    NumericMatrix score_theta = wrap(MatrixXd::Constant(Y_.rows(), Y_.cols(), 0));
+    NumericVector score_beta =  wrap(VectorXd::Constant(X.length(),0));
+    
+    double sigma_sum = 0;
+    
+    double obj_old = Compute_obj_linear_with_theta(X, Y, beta_old, Theta_old, 
+                                                   sigma_sum, phi);
+    double obj_new = obj_old;
+    
+    int num_iter = 0;
+    
+    while(num_iter !=iter_max){
+        double s_t = s;
+        List list_score = Compute_score_linear_with_theta(X, Y, beta_old, Theta_old);
+        score_beta = as<NumericVector>(list_score["score_beta"]);
+        score_theta = as<NumericMatrix>(list_score["score_theta"]);
+        while(1){
+            beta_new = Update_beta(beta_old, score_beta, s_t/(Y_.size()));
+            List list_theta = Update_theta(Theta_old, score_theta, s_t, phi);
+            Theta_new = as<NumericMatrix>(list_theta["Theta_est"]);
+            const Map<VectorXd> sigma_(as<Map<VectorXd>> 
+                                       (as<NumericVector>(list_theta["sigma"])));
+            sigma_sum = sigma_.sum();
+            obj_new = Compute_obj_linear_with_theta(X, Y, beta_new, Theta_new, 
+                                                    sigma_sum, phi);
+            //Rcout << obj_old<< std::endl;
+            //Rcout << obj_new<< std::endl;
+            if (obj_new > obj_old){
+                s_t = s_t/2;
+                //Rcout << s_t << std::endl;
+            } 
+            else{
+                beta_old =  beta_new;
+                Theta_old =  Theta_new;
+                num_iter = num_iter + 1;
+                Rcout << "NNR - Iter " << num_iter <<": Coefficiet = " << beta_new << std::endl;
+                //Rcout << "Hi\n" << std::endl;
+                break;
+            }
+            
+        }
+        if(obj_new < (1-tol) * obj_old){
+            obj_old = obj_new;
+            //Rcout << obj_new << std::endl;
+        }
+        else{
+            break;
+        }
+        
+    }
+    return List::create(Named("beta_est") = beta_new,
+                        Named("Theta_est") = Theta_new );
+}
+
+
+// [[Rcpp::export]]
+
+List MLE_linear(const List & X,  const NumericMatrix & Y, 
+                const NumericVector  beta_0, 
+                const NumericMatrix & L_0, const NumericMatrix & R_0, 
+                const double s, const int iter_max, const double tol){
+    
+    const Map<MatrixXd> Y_(as<Map<MatrixXd>> (Y));
+    const Map<MatrixXd> L_0_(as<Map<MatrixXd>> (L_0));
+    const Map<MatrixXd> R_0_(as<Map<MatrixXd>> (R_0));
+    
+    NumericVector beta_new = clone(beta_0);
+    NumericVector beta_old =clone(beta_0);
+    NumericMatrix L_new = clone(L_0);
+    NumericMatrix L_old = clone(L_0);
+    NumericMatrix R_new = clone(R_0);
+    NumericMatrix R_old = clone(R_0);
+    
+    NumericMatrix score_L = wrap(MatrixXd::Constant(L_0_.rows(), L_0_.cols(), 0));
+    NumericMatrix score_R = wrap(MatrixXd::Constant(R_0_.rows(), R_0_.cols(), 0));
+    NumericVector score_beta =  wrap(VectorXd::Constant(X.length(),0));
+    
+    double obj_old = Compute_obj_linear_with_LR(X, Y, beta_old, L_old, R_old);
+    double obj_new = obj_old;
+    
+    int num_iter = 0;
+    
+    while(num_iter !=iter_max){
+        double s_t = s;
+        List list_score = Compute_score_linear_with_LR(X, Y, beta_old, L_old, R_old);
+        score_beta = as<NumericVector>(list_score["score_beta"]);
+        score_L = as<NumericMatrix>(list_score["score_L"]);
+        score_R = as<NumericMatrix>(list_score["score_R"]);
+        
+        while(1){
+            beta_new = Update_beta(beta_old, score_beta, s_t/(Y_.size()));
+            List list_LR = Update_LR(L_old, R_old, score_L, score_R, s_t/(Y_.cols()), s_t/(Y_.rows()));
+            L_new = as<NumericMatrix>(list_LR["L_est"]);
+            R_new = as<NumericMatrix>(list_LR["R_est"]);
+            //Rcout << 1 << std::endl;
+            //Rcout << 2 << std::endl;
+            
+            obj_new = Compute_obj_linear_with_LR(X, Y, beta_new, L_new, R_new);
+            //Rcout << obj_old<< std::endl;
+            //Rcout << obj_new<< std::endl;
+            if (obj_new > obj_old && s_t >=1e-5){
+                s_t = s_t/2;
+                //Rcout << s_t << std::endl;
+            } 
+            else{
+                beta_old =  beta_new;
+                L_old = L_new;
+                R_old = R_new;
+                num_iter = num_iter + 1;
+                Rcout << "MLE - Iter " << num_iter <<": Coefficiet = " << beta_new << std::endl;
+                //Rcout << "Hi\n" << std::endl;
+                break;
+            }
+        }
+        
+        if(obj_new < (1-tol) * obj_old){
+            //Rcout << obj_old << std::endl;
+            obj_old = obj_new;
+        }
+        else{
+            break;
+        }
+    }
+    return List::create(Named("beta_est") = beta_new,
+                        Named("L_est") = L_new, 
+                        Named("R_est") = R_new);
+}
 
 
 

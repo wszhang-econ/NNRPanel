@@ -22,7 +22,7 @@ columns are treated as covariates in the regression model. The panel is
 required to be balanced.}
 
 \item{func}{A character string indicating the model:
-\code{"logit"},  \code{"probit"}, or \code{"poisson"}.}
+\code{"linear"}, \code{"logit"},  \code{"probit"}, and \code{"poisson"}.}
 
 \item{delta}{Positive scalar inflation factor used to set
 \eqn{\varphi = (1+\delta)\sigma_1}, where \eqn{\sigma_1} is the leading

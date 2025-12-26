@@ -11,7 +11,7 @@ The proposed estimator avoids solving a high-dimensional non-convex optimization
 
 ## Details
 
-NNRPanel is designed for panel data, and support for network data will be added soon. The package supports both logistic and Poisson models.   It also provides a data-driven tuning-parameter selection method and a simple procedure for determining the number of factors.
+NNRPanel is designed for panel data, and support for network data will be added soon. The package supports linear, logistic, Probit, and Poisson models.   It also provides a data-driven tuning-parameter selection method and a simple procedure for determining the number of factors.
 
 ### Key Functionality
 
@@ -57,7 +57,7 @@ data_list <- gen_data_logit(N = 200, T = 200, num_factor = 2, num_Z = 1, beta = 
 data_frame <- list_to_data_frame(data_list)
 
 # Main estimator with data-driven factor selection
-res <- NNRPanel_estimate(data_frame, func = "logit", R_max = 5, R_true = 2, delta = 0.05)
+est <- NNRPanel_estimate(data_frame, func = "logit", R_max = 5, R_true = 2, delta = 0.05)
 ```
 #### References
 Andrei Zeleneev, Weisheng Zhang (2025). <b>Tractable Estimation of Nonlinear Panels with Interactive Fixed Effects</b> [<a href="https://arxiv.org/abs/2511.15427">link</a>]

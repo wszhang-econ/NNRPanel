@@ -149,3 +149,26 @@ gen_data_probit <- function(N, T, num_factor, num_Z, beta, sigma = 1){
         )
     )
 }
+
+gen_data_linear <- function(N, T, num_factor, num_Z, beta, sigma = 1){
+    index <- matrix(0, N, T)
+    list_factor <- gen_factor(N, T, num_factor, sigma)
+    L <- list_factor$L
+    R <- list_factor$R
+    Z <- gen_Z(N, T, num_Z, list_factor, sigma)
+    for (i in 1:num_Z){
+        index <- index + beta[i] * Z[[i]]
+    }
+    index <- index + L %*% t(R)
+    epsilon <- rnorm(N*T, 0, 1) %>% matrix(N, T)
+    Y <- index + epsilon
+    return(
+        list(
+            X = Z,
+            list_factor = list_factor, 
+            index = index, 
+            interact_f = L %*% t(R), 
+            Y = Y
+        )
+    )
+}

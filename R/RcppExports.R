@@ -121,6 +121,14 @@ Compute_bias_corr_probit_robust <- function(Y, X, beta, L, R, truc) {
     .Call('_NNRPanel_Compute_bias_corr_probit_robust', PACKAGE = 'NNRPanel', Y, X, beta, L, R, truc)
 }
 
+Compute_bias_corr_linear <- function(Y, X, beta, L, R, truc) {
+    .Call('_NNRPanel_Compute_bias_corr_linear', PACKAGE = 'NNRPanel', Y, X, beta, L, R, truc)
+}
+
+Compute_bias_corr_linear_robust <- function(Y, X, beta, L, R, truc) {
+    .Call('_NNRPanel_Compute_bias_corr_linear_robust', PACKAGE = 'NNRPanel', Y, X, beta, L, R, truc)
+}
+
 Update_beta <- function(beta, score_beta, s) {
     .Call('_NNRPanel_Update_beta', PACKAGE = 'NNRPanel', beta, score_beta, s)
 }
@@ -175,6 +183,14 @@ fit_probit <- function(X, Y, phi, s, iter_max, tol) {
 
 MLE_probit <- function(X, Y, beta_0, L_0, R_0, s, iter_max, tol) {
     .Call('_NNRPanel_MLE_probit', PACKAGE = 'NNRPanel', X, Y, beta_0, L_0, R_0, s, iter_max, tol)
+}
+
+fit_linear <- function(X, Y, phi, s, iter_max, tol) {
+    .Call('_NNRPanel_fit_linear', PACKAGE = 'NNRPanel', X, Y, phi, s, iter_max, tol)
+}
+
+MLE_linear <- function(X, Y, beta_0, L_0, R_0, s, iter_max, tol) {
+    .Call('_NNRPanel_MLE_linear', PACKAGE = 'NNRPanel', X, Y, beta_0, L_0, R_0, s, iter_max, tol)
 }
 
 Compute_logl_poisson_with_theta_FE_network <- function(X, Y, beta, fe_N, fe_T, Theta) {
@@ -233,60 +249,56 @@ MLE_poisson_FE_network <- function(X, Y, beta_0, fe_N_0, fe_T_0, L_0, R_0, s, it
     .Call('_NNRPanel_MLE_poisson_FE_network', PACKAGE = 'NNRPanel', X, Y, beta_0, fe_N_0, fe_T_0, L_0, R_0, s, iter_max, tol)
 }
 
-Compute_logl_probit_with_theta <- function(X, Y, beta, Theta) {
-    .Call('_NNRPanel_Compute_logl_probit_with_theta', PACKAGE = 'NNRPanel', X, Y, beta, Theta)
+Compute_logl_linear_with_theta <- function(X, Y, beta, Theta) {
+    .Call('_NNRPanel_Compute_logl_linear_with_theta', PACKAGE = 'NNRPanel', X, Y, beta, Theta)
 }
 
-Compute_logl_probit_with_theta_FE <- function(X, Y, beta, fe_N, fe_T, Theta) {
-    .Call('_NNRPanel_Compute_logl_probit_with_theta_FE', PACKAGE = 'NNRPanel', X, Y, beta, fe_N, fe_T, Theta)
+Compute_logl_linear_with_theta_FE <- function(X, Y, beta, fe_N, fe_T, Theta) {
+    .Call('_NNRPanel_Compute_logl_linear_with_theta_FE', PACKAGE = 'NNRPanel', X, Y, beta, fe_N, fe_T, Theta)
 }
 
-Compute_logl_probit_with_LR <- function(X, Y, beta, L, R) {
-    .Call('_NNRPanel_Compute_logl_probit_with_LR', PACKAGE = 'NNRPanel', X, Y, beta, L, R)
+Compute_logl_linear_with_LR <- function(X, Y, beta, L, R) {
+    .Call('_NNRPanel_Compute_logl_linear_with_LR', PACKAGE = 'NNRPanel', X, Y, beta, L, R)
 }
 
-Compute_logl_probit_with_LR_FE <- function(X, Y, beta, fe_N, fe_T, L, R) {
-    .Call('_NNRPanel_Compute_logl_probit_with_LR_FE', PACKAGE = 'NNRPanel', X, Y, beta, fe_N, fe_T, L, R)
+Compute_logl_linear_with_LR_FE <- function(X, Y, beta, fe_N, fe_T, L, R) {
+    .Call('_NNRPanel_Compute_logl_linear_with_LR_FE', PACKAGE = 'NNRPanel', X, Y, beta, fe_N, fe_T, L, R)
 }
 
-Compute_score_probit_with_theta <- function(X, Y, beta, Theta) {
-    .Call('_NNRPanel_Compute_score_probit_with_theta', PACKAGE = 'NNRPanel', X, Y, beta, Theta)
+Compute_score_linear_with_theta <- function(X, Y, beta, Theta) {
+    .Call('_NNRPanel_Compute_score_linear_with_theta', PACKAGE = 'NNRPanel', X, Y, beta, Theta)
 }
 
-Compute_score_probit_with_theta_FE <- function(X, Y, beta, fe_N, fe_T, Theta) {
-    .Call('_NNRPanel_Compute_score_probit_with_theta_FE', PACKAGE = 'NNRPanel', X, Y, beta, fe_N, fe_T, Theta)
+Compute_score_linear_with_theta_FE <- function(X, Y, beta, fe_N, fe_T, Theta) {
+    .Call('_NNRPanel_Compute_score_linear_with_theta_FE', PACKAGE = 'NNRPanel', X, Y, beta, fe_N, fe_T, Theta)
 }
 
-Compute_score_probit_with_LR <- function(X, Y, beta, L, R) {
-    .Call('_NNRPanel_Compute_score_probit_with_LR', PACKAGE = 'NNRPanel', X, Y, beta, L, R)
+Compute_score_linear_with_LR <- function(X, Y, beta, L, R) {
+    .Call('_NNRPanel_Compute_score_linear_with_LR', PACKAGE = 'NNRPanel', X, Y, beta, L, R)
 }
 
-Compute_score_probit_with_LR_FE <- function(X, Y, beta, fe_N, fe_T, L, R) {
-    .Call('_NNRPanel_Compute_score_probit_with_LR_FE', PACKAGE = 'NNRPanel', X, Y, beta, fe_N, fe_T, L, R)
+Compute_score_linear_with_LR_FE <- function(X, Y, beta, fe_N, fe_T, L, R) {
+    .Call('_NNRPanel_Compute_score_linear_with_LR_FE', PACKAGE = 'NNRPanel', X, Y, beta, fe_N, fe_T, L, R)
 }
 
-Compute_obj_probit_with_theta <- function(X, Y, beta, Theta, sigma_sum, phi) {
-    .Call('_NNRPanel_Compute_obj_probit_with_theta', PACKAGE = 'NNRPanel', X, Y, beta, Theta, sigma_sum, phi)
+Compute_obj_linear_with_theta <- function(X, Y, beta, Theta, sigma_sum, phi) {
+    .Call('_NNRPanel_Compute_obj_linear_with_theta', PACKAGE = 'NNRPanel', X, Y, beta, Theta, sigma_sum, phi)
 }
 
-Compute_obj_probit_with_theta_FE <- function(X, Y, beta, fe_N, fe_T, Theta, sigma_sum, phi) {
-    .Call('_NNRPanel_Compute_obj_probit_with_theta_FE', PACKAGE = 'NNRPanel', X, Y, beta, fe_N, fe_T, Theta, sigma_sum, phi)
+Compute_obj_linear_with_theta_FE <- function(X, Y, beta, fe_N, fe_T, Theta, sigma_sum, phi) {
+    .Call('_NNRPanel_Compute_obj_linear_with_theta_FE', PACKAGE = 'NNRPanel', X, Y, beta, fe_N, fe_T, Theta, sigma_sum, phi)
 }
 
-Compute_obj_probit_with_LR <- function(X, Y, beta, L, R) {
-    .Call('_NNRPanel_Compute_obj_probit_with_LR', PACKAGE = 'NNRPanel', X, Y, beta, L, R)
+Compute_obj_linear_with_LR <- function(X, Y, beta, L, R) {
+    .Call('_NNRPanel_Compute_obj_linear_with_LR', PACKAGE = 'NNRPanel', X, Y, beta, L, R)
 }
 
-Compute_obj_probit_with_LR_FE <- function(X, Y, beta, fe_N, fe_T, L, R) {
-    .Call('_NNRPanel_Compute_obj_probit_with_LR_FE', PACKAGE = 'NNRPanel', X, Y, beta, fe_N, fe_T, L, R)
+Compute_obj_linear_with_LR_FE <- function(X, Y, beta, fe_N, fe_T, L, R) {
+    .Call('_NNRPanel_Compute_obj_linear_with_LR_FE', PACKAGE = 'NNRPanel', X, Y, beta, fe_N, fe_T, L, R)
 }
 
-Compute_first_order_probit_with_LR <- function(X, Y, beta, L, R) {
-    .Call('_NNRPanel_Compute_first_order_probit_with_LR', PACKAGE = 'NNRPanel', X, Y, beta, L, R)
-}
-
-Compute_second_order_probit_with_LR <- function(X, Y, beta, L, R) {
-    .Call('_NNRPanel_Compute_second_order_probit_with_LR', PACKAGE = 'NNRPanel', X, Y, beta, L, R)
+Compute_first_order_linear_with_LR <- function(X, Y, beta, L, R) {
+    .Call('_NNRPanel_Compute_first_order_linear_with_LR', PACKAGE = 'NNRPanel', X, Y, beta, L, R)
 }
 
 Compute_logl_logit_with_theta <- function(X, Y, beta, Theta) {
@@ -419,5 +431,61 @@ Compute_second_order_poisson_with_LR_FE <- function(X, beta, fe_N, fe_T, L, R) {
 
 Sim_dynamic_poisson <- function(Z, beta_W, beta_Z, Theta) {
     .Call('_NNRPanel_Sim_dynamic_poisson', PACKAGE = 'NNRPanel', Z, beta_W, beta_Z, Theta)
+}
+
+Compute_logl_probit_with_theta <- function(X, Y, beta, Theta) {
+    .Call('_NNRPanel_Compute_logl_probit_with_theta', PACKAGE = 'NNRPanel', X, Y, beta, Theta)
+}
+
+Compute_logl_probit_with_theta_FE <- function(X, Y, beta, fe_N, fe_T, Theta) {
+    .Call('_NNRPanel_Compute_logl_probit_with_theta_FE', PACKAGE = 'NNRPanel', X, Y, beta, fe_N, fe_T, Theta)
+}
+
+Compute_logl_probit_with_LR <- function(X, Y, beta, L, R) {
+    .Call('_NNRPanel_Compute_logl_probit_with_LR', PACKAGE = 'NNRPanel', X, Y, beta, L, R)
+}
+
+Compute_logl_probit_with_LR_FE <- function(X, Y, beta, fe_N, fe_T, L, R) {
+    .Call('_NNRPanel_Compute_logl_probit_with_LR_FE', PACKAGE = 'NNRPanel', X, Y, beta, fe_N, fe_T, L, R)
+}
+
+Compute_score_probit_with_theta <- function(X, Y, beta, Theta) {
+    .Call('_NNRPanel_Compute_score_probit_with_theta', PACKAGE = 'NNRPanel', X, Y, beta, Theta)
+}
+
+Compute_score_probit_with_theta_FE <- function(X, Y, beta, fe_N, fe_T, Theta) {
+    .Call('_NNRPanel_Compute_score_probit_with_theta_FE', PACKAGE = 'NNRPanel', X, Y, beta, fe_N, fe_T, Theta)
+}
+
+Compute_score_probit_with_LR <- function(X, Y, beta, L, R) {
+    .Call('_NNRPanel_Compute_score_probit_with_LR', PACKAGE = 'NNRPanel', X, Y, beta, L, R)
+}
+
+Compute_score_probit_with_LR_FE <- function(X, Y, beta, fe_N, fe_T, L, R) {
+    .Call('_NNRPanel_Compute_score_probit_with_LR_FE', PACKAGE = 'NNRPanel', X, Y, beta, fe_N, fe_T, L, R)
+}
+
+Compute_obj_probit_with_theta <- function(X, Y, beta, Theta, sigma_sum, phi) {
+    .Call('_NNRPanel_Compute_obj_probit_with_theta', PACKAGE = 'NNRPanel', X, Y, beta, Theta, sigma_sum, phi)
+}
+
+Compute_obj_probit_with_theta_FE <- function(X, Y, beta, fe_N, fe_T, Theta, sigma_sum, phi) {
+    .Call('_NNRPanel_Compute_obj_probit_with_theta_FE', PACKAGE = 'NNRPanel', X, Y, beta, fe_N, fe_T, Theta, sigma_sum, phi)
+}
+
+Compute_obj_probit_with_LR <- function(X, Y, beta, L, R) {
+    .Call('_NNRPanel_Compute_obj_probit_with_LR', PACKAGE = 'NNRPanel', X, Y, beta, L, R)
+}
+
+Compute_obj_probit_with_LR_FE <- function(X, Y, beta, fe_N, fe_T, L, R) {
+    .Call('_NNRPanel_Compute_obj_probit_with_LR_FE', PACKAGE = 'NNRPanel', X, Y, beta, fe_N, fe_T, L, R)
+}
+
+Compute_first_order_probit_with_LR <- function(X, Y, beta, L, R) {
+    .Call('_NNRPanel_Compute_first_order_probit_with_LR', PACKAGE = 'NNRPanel', X, Y, beta, L, R)
+}
+
+Compute_second_order_probit_with_LR <- function(X, Y, beta, L, R) {
+    .Call('_NNRPanel_Compute_second_order_probit_with_LR', PACKAGE = 'NNRPanel', X, Y, beta, L, R)
 }
 

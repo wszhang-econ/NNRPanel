@@ -19,7 +19,7 @@
 #'   \code{calculate_tuning_parameter()} using the same \code{data_frame},
 #'   \code{func}, \code{delta}, \code{R_max}, \code{s}, \code{iter_max}, and
 #'   \code{tol}.
-#' @param func A character string indicating the outcome model:
+#' @param func A character string indicating the outcome model: \code{"linear"} for linear regression,
 #'   \code{"logit"} for logistic regression, \code{"probit"} for Probit regression, and \code{"poisson"} for Poisson
 #'   regression.
 #' @param delta Inflation factor used when computing a data-driven \eqn{\varphi}.
@@ -112,6 +112,9 @@ NNRPanel_estimate <- function(data_frame, phi, func, delta = 0.05, R_max = 5, R_
     }
     if(func =="probit"){
         nnr_fit <- fit_probit(X, Y,  phi = phi, s = s, iter_max = 300, tol = tol)
+    }
+    if(func =="linear"){
+        nnr_fit <- fit_linear(X, Y,  phi = phi, s = s, iter_max = 300, tol = tol)
     }
     
     
@@ -247,6 +250,48 @@ NNRPanel_estimate <- function(data_frame, phi, func, delta = 0.05, R_max = 5, R_
             fe_fit_upper = MLE_probit(data_upper$X, data_upper$Y, beta_0, data_upper$L, data_upper$R, s = s, iter_max = iter_max, tol = tol)
             beta_fe_upper <- fe_fit_upper$beta_est
             fe_fit_bottom = MLE_probit(data_bottom$X, data_bottom$Y, beta_0, data_bottom$L, data_bottom$R, s = s, iter_max = iter_max, tol = tol)
+            beta_fe_bottom <- fe_fit_bottom$beta_est
+            
+            beta_corr_sp <- 3* beta_fe - (beta_fe_left + beta_fe_right + beta_fe_upper + beta_fe_bottom)/2
+            
+        }
+        if(func == "linear"){
+            
+            # Second step estimation 
+            list_LR = Low_rank_appro(nnr_fit$Theta_est, R_true);
+            L_0 = list_LR$L
+            R_0 = list_LR$R
+            beta_0 = beta_nnr  
+            fe_fit = MLE_linear(X, Y, beta_0, L_0, R_0, s = s, iter_max = iter_max, tol = tol)
+            beta_fe <- fe_fit$beta_est
+            L_fe = fe_fit$L_est
+            R_fe = fe_fit$R_est
+            
+            # Analytical bias correction 
+            
+            bias_corr <- Compute_bias_corr_linear(Y, X, beta_fe, L_fe, R_fe, 0)
+            print(bias_corr)
+            beta_corr <- bias_corr$beta_corr
+            if(is.na(beta_corr[1])){
+                beta_corr <- beta_fe
+            }
+            std_beta_corr <- bias_corr$std_est
+            
+            # Sample splitting bias correction with correct number of factor
+            
+            data_sample_split <-  sample_split(data_list, L_0, R_0)
+            data_left <- data_sample_split$data_left
+            data_right <- data_sample_split$data_right
+            data_upper <- data_sample_split$data_upper
+            data_bottom <- data_sample_split$data_bottom
+            
+            fe_fit_left = MLE_linear(data_left$X, data_left$Y, beta_0, data_left$L, data_left$R, s = s, iter_max = iter_max, tol = tol)
+            beta_fe_left <- fe_fit_left$beta_est
+            fe_fit_right = MLE_linear(data_right$X, data_right$Y, beta_0, data_right$L, data_right$R, s = s, iter_max = iter_max, tol = tol)
+            beta_fe_right <- fe_fit_right$beta_est
+            fe_fit_upper = MLE_linear(data_upper$X, data_upper$Y, beta_0, data_upper$L, data_upper$R, s = s, iter_max = iter_max, tol = tol)
+            beta_fe_upper <- fe_fit_upper$beta_est
+            fe_fit_bottom = MLE_linear(data_bottom$X, data_bottom$Y, beta_0, data_bottom$L, data_bottom$R, s = s, iter_max = iter_max, tol = tol)
             beta_fe_bottom <- fe_fit_bottom$beta_est
             
             beta_corr_sp <- 3* beta_fe - (beta_fe_left + beta_fe_right + beta_fe_upper + beta_fe_bottom)/2
@@ -397,6 +442,54 @@ NNRPanel_estimate <- function(data_frame, phi, func, delta = 0.05, R_max = 5, R_
         fe_fit_upper = MLE_probit(data_upper$X, data_upper$Y, beta_0, data_upper$L, data_upper$R, s = s,  iter_max = iter_max, tol = tol)
         beta_fe_upper_data <- fe_fit_upper$beta_est
         fe_fit_bottom = MLE_probit(data_bottom$X, data_bottom$Y, beta_0, data_bottom$L, data_bottom$R, s = s,  iter_max = iter_max, tol = tol)
+        beta_fe_bottom_data <- fe_fit_bottom$beta_est
+        
+        beta_corr_sp_data <- 3* beta_fe_data - (beta_fe_left_data + beta_fe_right_data + beta_fe_upper_data + beta_fe_bottom_data)/2
+        
+    }
+    if(func=="linear"){
+        
+        # Second step estimation 
+        
+        list_LR = Low_rank_appro(nnr_fit$Theta_est, num_factor_est);
+        L_0 = list_LR$L
+        R_0 = list_LR$R
+        beta_0 = beta_nnr
+        if (num_factor_est==0){
+            L_0 <- matrix(0, N, 1)
+            R_0 <- matrix(0, T, 1)
+        }
+        
+        fe_fit_data = MLE_linear(X, Y, beta_0, L_0, R_0, s = s, iter_max = iter_max, tol = tol)
+        beta_fe_data <- fe_fit_data$beta_est
+        L_fe_data = fe_fit_data$L_est
+        R_fe_data = fe_fit_data$R_est
+        
+        
+        # Analytical bias correction with number of factor (data_driven)
+        bias_corr_data <- Compute_bias_corr_linear(Y, X, beta_fe_data, L_fe_data, R_fe_data, 0)
+        beta_corr_data <- bias_corr_data$beta_corr
+        if(is.na(beta_corr_data[1])){
+            beta_corr_data <- beta_fe_data
+        }
+        std_beta_corr_data <- bias_corr_data$std_est
+        
+        
+        # Sample splitting bias correction with number of factor (data_driven)
+        
+        data_sample_split <-  sample_split(data_list, L_0, R_0)
+        data_left <- data_sample_split$data_left
+        data_right <- data_sample_split$data_right
+        data_upper <- data_sample_split$data_upper
+        data_bottom <- data_sample_split$data_bottom
+        
+        fe_fit_left = MLE_linear(data_left$X, data_left$Y, beta_0, data_left$L, data_left$R, s = s, iter_max = iter_max, tol = tol)
+        beta_fe_left_data <- fe_fit_left$beta_est
+        fe_fit_right = MLE_linear(data_right$X, data_right$Y, beta_0, data_right$L, data_right$R, s = s,  iter_max = iter_max, tol = tol)
+        beta_fe_right_data <- fe_fit_right$beta_est
+        fe_fit_upper = MLE_linear(data_upper$X, data_upper$Y, beta_0, data_upper$L, data_upper$R, s = s,  iter_max = iter_max, tol = tol)
+        beta_fe_upper_data <- fe_fit_upper$beta_est
+        fe_fit_bottom = MLE_linear(data_bottom$X, data_bottom$Y, beta_0, data_bottom$L, data_bottom$R, s = s,  iter_max = iter_max, tol = tol)
         beta_fe_bottom_data <- fe_fit_bottom$beta_est
         
         beta_corr_sp_data <- 3* beta_fe_data - (beta_fe_left_data + beta_fe_right_data + beta_fe_upper_data + beta_fe_bottom_data)/2

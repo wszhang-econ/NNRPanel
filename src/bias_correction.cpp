@@ -2,6 +2,8 @@
 #include "mathfunc_logit.h"
 #include "mathfunc_poisson.h"
 #include "mathfunc_probit.h"
+#include "mathfunc_linear.h"
+
 
 using std::vector;
 
@@ -936,3 +938,135 @@ List Compute_bias_corr_probit_robust(const NumericMatrix & Y, const List & X,
                         Named("std_est_robust") = wrap(std_est_robust_));
     
 }
+
+
+
+// [[Rcpp::export]]
+
+List Compute_bias_corr_linear(const NumericMatrix & Y, const List & X, 
+                              const NumericVector & beta, 
+                              const NumericMatrix & L, const NumericMatrix & R, 
+                              const int truc){
+    
+    const Map<MatrixXd> Y_ (as <Map<MatrixXd>> (Y));
+    const Map<MatrixXd> L_ (as <Map<MatrixXd>> (L));
+    //const Map<MatrixXd> R_ (as <Map<MatrixXd>> (R));
+    const Map<VectorXd> beta_ (as <Map<VectorXd>> (beta));
+    
+    int N = Y_.rows();
+    int T = Y_.cols();
+    //int num_factor = L_.cols();
+    //int dx = X.length();
+    
+    NumericMatrix first_order = Compute_first_order_linear_with_LR(X, Y, beta, L, R);
+    NumericMatrix second_order(N, T);
+    std::fill(second_order.begin(), second_order.end(), 1.0);
+    NumericMatrix third_order(N, T);
+    std::fill(third_order.begin(), third_order.end(), 0.0);
+    
+
+    
+    std::vector<std::vector<Eigen::MatrixXd>> X_res_ = Create_X_res(X, L, R, second_order);
+    
+    NumericMatrix B = Compute_bias_corr_B(first_order, second_order, third_order,
+                                          R, X_res_, truc);
+    NumericMatrix D = Compute_bias_corr_D(first_order, second_order, third_order,
+                                          L, X_res_);
+    NumericMatrix W = Compute_bias_corr_W(second_order, X_res_);
+    
+    Map<MatrixXd> B_ (as <Map<MatrixXd>> (B));
+    Map<MatrixXd> D_ (as <Map<MatrixXd>> (D));
+    Map<MatrixXd> W_ (as <Map<MatrixXd>> (W));
+    
+    
+    MatrixXd Cov_matrixX_ = W_.inverse();
+    
+    VectorXd beta_corr_ = beta_ + 1.0/T * Cov_matrixX_ * B_  + 1.0/N * Cov_matrixX_ * D_;
+    
+    
+    VectorXd std_est_ = Cov_matrixX_.diagonal();
+    std_est_ = std_est_/(N*T);
+    std_est_ = std_est_.array().sqrt();
+    
+    
+    return List::create(Named("beta_corr") = wrap(beta_corr_), 
+                        Named("B_est") = B, 
+                        Named("D_est") = D,
+                        Named("W_est") = W, 
+                        Named("Cov_est") = wrap(Cov_matrixX_), 
+                        Named("std_est") = wrap(std_est_));
+}
+
+
+
+// [[Rcpp::export]]
+
+List Compute_bias_corr_linear_robust(const NumericMatrix & Y, const List & X, 
+                                    const NumericVector & beta, 
+                                    const NumericMatrix & L, const NumericMatrix & R, 
+                                    const int truc){
+    
+    const Map<MatrixXd> Y_ (as <Map<MatrixXd>> (Y));
+    const Map<MatrixXd> L_ (as <Map<MatrixXd>> (L));
+    //const Map<MatrixXd> R_ (as <Map<MatrixXd>> (R));
+    const Map<VectorXd> beta_ (as <Map<VectorXd>> (beta));
+    
+    int N = Y_.rows();
+    int T = Y_.cols();
+    //int num_factor = L_.cols();
+    //int dx = X.length();
+    
+    NumericMatrix first_order = Compute_first_order_linear_with_LR(X, Y, beta, L, R);
+    NumericMatrix second_order(N, T);
+    std::fill(second_order.begin(), second_order.end(), 1.0);
+    NumericMatrix third_order(N, T);
+    std::fill(third_order.begin(), third_order.end(), 0.0);
+    
+    
+    std::vector<std::vector<Eigen::MatrixXd>> X_res_ = Create_X_res(X, L, R, second_order);
+    
+    NumericMatrix B = Compute_bias_corr_B(first_order, second_order, third_order,
+                                          R, X_res_, truc);
+    NumericMatrix D = Compute_bias_corr_D(first_order, second_order, third_order,
+                                          L, X_res_);
+    NumericMatrix W = Compute_bias_corr_W(second_order, X_res_);
+    
+    NumericMatrix V = Compute_bias_corr_V(first_order, X_res_);
+    
+    
+    Map<MatrixXd> B_ (as <Map<MatrixXd>> (B));
+    Map<MatrixXd> D_ (as <Map<MatrixXd>> (D));
+    Map<MatrixXd> W_ (as <Map<MatrixXd>> (W));
+    Map<MatrixXd> V_ (as <Map<MatrixXd>> (V));
+    
+    
+    MatrixXd Cov_matrixX_ = W_.inverse();
+    
+    MatrixXd Cov_matrixX_robust_ = W_.inverse() * V_ * W_.inverse();
+    
+    VectorXd beta_corr_ = beta_ + 1.0/T * Cov_matrixX_ * B_  + 1.0/N * Cov_matrixX_ * D_;
+    
+    
+    VectorXd std_est_ = Cov_matrixX_.diagonal();
+    std_est_ = std_est_/(N*T);
+    std_est_ = std_est_.array().sqrt();
+    
+    VectorXd std_est_robust_ = Cov_matrixX_robust_.diagonal();
+    std_est_robust_ = std_est_robust_/(N*T);
+    std_est_robust_ = std_est_robust_.array().sqrt();
+    
+    
+    
+    return List::create(Named("beta_corr") = wrap(beta_corr_), 
+                        Named("B_est") = B, 
+                        Named("D_est") = D,
+                        Named("W_est") = W,
+                        Named("V_est") = V,
+                        Named("Cov_est") = wrap(Cov_matrixX_), 
+                        Named("std_est") = wrap(std_est_), 
+                        Named("Cov_est_robust") = wrap(Cov_matrixX_robust_), 
+                        Named("std_est_robust") = wrap(std_est_robust_));
+    
+}
+
+

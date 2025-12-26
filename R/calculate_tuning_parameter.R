@@ -17,7 +17,7 @@
 #'   columns are treated as covariates in the regression model. The panel is 
 #'   required to be balanced. 
 #' @param func A character string indicating the model:
-#'   \code{"logit"},  \code{"probit"}, or \code{"poisson"}.
+#'   \code{"linear"}, \code{"logit"},  \code{"probit"}, and \code{"poisson"}.
 #' @param delta Positive scalar inflation factor used to set
 #'   \eqn{\varphi = (1+\delta)\sigma_1}, where \eqn{\sigma_1} is the leading
 #'   singular value of the residual matrix.
@@ -73,6 +73,11 @@ calculate_tuning_parameter <- function(data_frame, func, delta, R_max = 5, s = 1
     }
     if(func=="probit"){
         TW_model <- fixest::feglm(formula , family = binomial(link = "probit"), data = data_frame)
+        Y_fit <- fitted(TW_model)
+        Y_fit <- t(matrix(Y_fit, T, N))
+    }
+    if(func=="linear"){
+        TW_model <- fixest::felos(formula, data = data_frame)
         Y_fit <- fitted(TW_model)
         Y_fit <- t(matrix(Y_fit, T, N))
     }
@@ -149,6 +154,27 @@ calculate_tuning_parameter <- function(data_frame, func, delta, R_max = 5, s = 1
         index <- Compute_index_with_LR(X, beta_fe, L_fe, R_fe)
         P <-  pnorm(index)
         phi <- SVD(Y -P)$sigma[1] * (1 + delta)
+    }
+    if(func=="linear"){
+        nnr_fit = fit_linear(X, Y,  phi, s, 1000, tol)
+        beta_nnr <-  nnr_fit$beta_est
+        
+        sigma <-  SVD(nnr_fit$Theta_est)$sigma
+        num_factor_est <- determine_num_factor(sigma, R_max)
+        
+        list_LR = Low_rank_appro(nnr_fit$Theta_est, num_factor_est);
+        L_0 = list_LR$L
+        R_0 = list_LR$R
+        beta_0 = beta_nnr
+        
+        fe_fit = MLE_linear(X, Y, beta_0, L_0, R_0, s, iter_max, tol)
+        beta_fe <- fe_fit$beta_est
+        L_fe = fe_fit$L_est
+        R_fe = fe_fit$R_est
+        
+        
+        index <- Compute_index_with_LR(X, beta_fe, L_fe, R_fe)
+        phi <- SVD(Y -index)$sigma[1] * (1 + delta)
     }
     
     

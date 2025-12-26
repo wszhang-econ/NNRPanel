@@ -432,6 +432,38 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// Compute_bias_corr_linear
+List Compute_bias_corr_linear(const NumericMatrix& Y, const List& X, const NumericVector& beta, const NumericMatrix& L, const NumericMatrix& R, const int truc);
+RcppExport SEXP _NNRPanel_Compute_bias_corr_linear(SEXP YSEXP, SEXP XSEXP, SEXP betaSEXP, SEXP LSEXP, SEXP RSEXP, SEXP trucSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const List& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type L(LSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type R(RSEXP);
+    Rcpp::traits::input_parameter< const int >::type truc(trucSEXP);
+    rcpp_result_gen = Rcpp::wrap(Compute_bias_corr_linear(Y, X, beta, L, R, truc));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Compute_bias_corr_linear_robust
+List Compute_bias_corr_linear_robust(const NumericMatrix& Y, const List& X, const NumericVector& beta, const NumericMatrix& L, const NumericMatrix& R, const int truc);
+RcppExport SEXP _NNRPanel_Compute_bias_corr_linear_robust(SEXP YSEXP, SEXP XSEXP, SEXP betaSEXP, SEXP LSEXP, SEXP RSEXP, SEXP trucSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const List& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type L(LSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type R(RSEXP);
+    Rcpp::traits::input_parameter< const int >::type truc(trucSEXP);
+    rcpp_result_gen = Rcpp::wrap(Compute_bias_corr_linear_robust(Y, X, beta, L, R, truc));
+    return rcpp_result_gen;
+END_RCPP
+}
 // Update_beta
 NumericVector Update_beta(const NumericVector& beta, const NumericVector& score_beta, const double s);
 RcppExport SEXP _NNRPanel_Update_beta(SEXP betaSEXP, SEXP score_betaSEXP, SEXP sSEXP) {
@@ -668,6 +700,40 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// fit_linear
+List fit_linear(const List& X, const NumericMatrix& Y, const double phi, const double s, const int iter_max, const double tol);
+RcppExport SEXP _NNRPanel_fit_linear(SEXP XSEXP, SEXP YSEXP, SEXP phiSEXP, SEXP sSEXP, SEXP iter_maxSEXP, SEXP tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const double >::type phi(phiSEXP);
+    Rcpp::traits::input_parameter< const double >::type s(sSEXP);
+    Rcpp::traits::input_parameter< const int >::type iter_max(iter_maxSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    rcpp_result_gen = Rcpp::wrap(fit_linear(X, Y, phi, s, iter_max, tol));
+    return rcpp_result_gen;
+END_RCPP
+}
+// MLE_linear
+List MLE_linear(const List& X, const NumericMatrix& Y, const NumericVector beta_0, const NumericMatrix& L_0, const NumericMatrix& R_0, const double s, const int iter_max, const double tol);
+RcppExport SEXP _NNRPanel_MLE_linear(SEXP XSEXP, SEXP YSEXP, SEXP beta_0SEXP, SEXP L_0SEXP, SEXP R_0SEXP, SEXP sSEXP, SEXP iter_maxSEXP, SEXP tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const NumericVector >::type beta_0(beta_0SEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type L_0(L_0SEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type R_0(R_0SEXP);
+    Rcpp::traits::input_parameter< const double >::type s(sSEXP);
+    Rcpp::traits::input_parameter< const int >::type iter_max(iter_maxSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    rcpp_result_gen = Rcpp::wrap(MLE_linear(X, Y, beta_0, L_0, R_0, s, iter_max, tol));
+    return rcpp_result_gen;
+END_RCPP
+}
 // Compute_logl_poisson_with_theta_FE_network
 NumericMatrix Compute_logl_poisson_with_theta_FE_network(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericVector& fe_N, const NumericVector& fe_T, const NumericMatrix& Theta);
 RcppExport SEXP _NNRPanel_Compute_logl_poisson_with_theta_FE_network(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP fe_NSEXP, SEXP fe_TSEXP, SEXP ThetaSEXP) {
@@ -900,9 +966,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// Compute_logl_probit_with_theta
-NumericMatrix Compute_logl_probit_with_theta(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericMatrix& Theta);
-RcppExport SEXP _NNRPanel_Compute_logl_probit_with_theta(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP ThetaSEXP) {
+// Compute_logl_linear_with_theta
+NumericMatrix Compute_logl_linear_with_theta(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericMatrix& Theta);
+RcppExport SEXP _NNRPanel_Compute_logl_linear_with_theta(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP ThetaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -910,13 +976,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type Theta(ThetaSEXP);
-    rcpp_result_gen = Rcpp::wrap(Compute_logl_probit_with_theta(X, Y, beta, Theta));
+    rcpp_result_gen = Rcpp::wrap(Compute_logl_linear_with_theta(X, Y, beta, Theta));
     return rcpp_result_gen;
 END_RCPP
 }
-// Compute_logl_probit_with_theta_FE
-NumericMatrix Compute_logl_probit_with_theta_FE(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericVector& fe_N, const NumericVector& fe_T, const NumericMatrix& Theta);
-RcppExport SEXP _NNRPanel_Compute_logl_probit_with_theta_FE(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP fe_NSEXP, SEXP fe_TSEXP, SEXP ThetaSEXP) {
+// Compute_logl_linear_with_theta_FE
+NumericMatrix Compute_logl_linear_with_theta_FE(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericVector& fe_N, const NumericVector& fe_T, const NumericMatrix& Theta);
+RcppExport SEXP _NNRPanel_Compute_logl_linear_with_theta_FE(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP fe_NSEXP, SEXP fe_TSEXP, SEXP ThetaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -926,13 +992,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericVector& >::type fe_N(fe_NSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type fe_T(fe_TSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type Theta(ThetaSEXP);
-    rcpp_result_gen = Rcpp::wrap(Compute_logl_probit_with_theta_FE(X, Y, beta, fe_N, fe_T, Theta));
+    rcpp_result_gen = Rcpp::wrap(Compute_logl_linear_with_theta_FE(X, Y, beta, fe_N, fe_T, Theta));
     return rcpp_result_gen;
 END_RCPP
 }
-// Compute_logl_probit_with_LR
-NumericMatrix Compute_logl_probit_with_LR(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericMatrix& L, const NumericMatrix& R);
-RcppExport SEXP _NNRPanel_Compute_logl_probit_with_LR(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP LSEXP, SEXP RSEXP) {
+// Compute_logl_linear_with_LR
+NumericMatrix Compute_logl_linear_with_LR(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericMatrix& L, const NumericMatrix& R);
+RcppExport SEXP _NNRPanel_Compute_logl_linear_with_LR(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP LSEXP, SEXP RSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -941,75 +1007,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type L(LSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type R(RSEXP);
-    rcpp_result_gen = Rcpp::wrap(Compute_logl_probit_with_LR(X, Y, beta, L, R));
+    rcpp_result_gen = Rcpp::wrap(Compute_logl_linear_with_LR(X, Y, beta, L, R));
     return rcpp_result_gen;
 END_RCPP
 }
-// Compute_logl_probit_with_LR_FE
-NumericMatrix Compute_logl_probit_with_LR_FE(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericVector& fe_N, const NumericVector& fe_T, const NumericMatrix& L, const NumericMatrix& R);
-RcppExport SEXP _NNRPanel_Compute_logl_probit_with_LR_FE(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP fe_NSEXP, SEXP fe_TSEXP, SEXP LSEXP, SEXP RSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const List& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type fe_N(fe_NSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type fe_T(fe_TSEXP);
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type L(LSEXP);
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type R(RSEXP);
-    rcpp_result_gen = Rcpp::wrap(Compute_logl_probit_with_LR_FE(X, Y, beta, fe_N, fe_T, L, R));
-    return rcpp_result_gen;
-END_RCPP
-}
-// Compute_score_probit_with_theta
-List Compute_score_probit_with_theta(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericMatrix& Theta);
-RcppExport SEXP _NNRPanel_Compute_score_probit_with_theta(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP ThetaSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const List& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type Theta(ThetaSEXP);
-    rcpp_result_gen = Rcpp::wrap(Compute_score_probit_with_theta(X, Y, beta, Theta));
-    return rcpp_result_gen;
-END_RCPP
-}
-// Compute_score_probit_with_theta_FE
-List Compute_score_probit_with_theta_FE(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericVector& fe_N, const NumericVector& fe_T, const NumericMatrix& Theta);
-RcppExport SEXP _NNRPanel_Compute_score_probit_with_theta_FE(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP fe_NSEXP, SEXP fe_TSEXP, SEXP ThetaSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const List& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type fe_N(fe_NSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type fe_T(fe_TSEXP);
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type Theta(ThetaSEXP);
-    rcpp_result_gen = Rcpp::wrap(Compute_score_probit_with_theta_FE(X, Y, beta, fe_N, fe_T, Theta));
-    return rcpp_result_gen;
-END_RCPP
-}
-// Compute_score_probit_with_LR
-List Compute_score_probit_with_LR(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericMatrix& L, const NumericMatrix& R);
-RcppExport SEXP _NNRPanel_Compute_score_probit_with_LR(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP LSEXP, SEXP RSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const List& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type L(LSEXP);
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type R(RSEXP);
-    rcpp_result_gen = Rcpp::wrap(Compute_score_probit_with_LR(X, Y, beta, L, R));
-    return rcpp_result_gen;
-END_RCPP
-}
-// Compute_score_probit_with_LR_FE
-List Compute_score_probit_with_LR_FE(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericVector& fe_N, const NumericVector& fe_T, const NumericMatrix& L, const NumericMatrix& R);
-RcppExport SEXP _NNRPanel_Compute_score_probit_with_LR_FE(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP fe_NSEXP, SEXP fe_TSEXP, SEXP LSEXP, SEXP RSEXP) {
+// Compute_logl_linear_with_LR_FE
+NumericMatrix Compute_logl_linear_with_LR_FE(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericVector& fe_N, const NumericVector& fe_T, const NumericMatrix& L, const NumericMatrix& R);
+RcppExport SEXP _NNRPanel_Compute_logl_linear_with_LR_FE(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP fe_NSEXP, SEXP fe_TSEXP, SEXP LSEXP, SEXP RSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1020,13 +1024,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericVector& >::type fe_T(fe_TSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type L(LSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type R(RSEXP);
-    rcpp_result_gen = Rcpp::wrap(Compute_score_probit_with_LR_FE(X, Y, beta, fe_N, fe_T, L, R));
+    rcpp_result_gen = Rcpp::wrap(Compute_logl_linear_with_LR_FE(X, Y, beta, fe_N, fe_T, L, R));
     return rcpp_result_gen;
 END_RCPP
 }
-// Compute_obj_probit_with_theta
-double Compute_obj_probit_with_theta(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericMatrix& Theta, const double sigma_sum, const double phi);
-RcppExport SEXP _NNRPanel_Compute_obj_probit_with_theta(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP ThetaSEXP, SEXP sigma_sumSEXP, SEXP phiSEXP) {
+// Compute_score_linear_with_theta
+List Compute_score_linear_with_theta(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericMatrix& Theta);
+RcppExport SEXP _NNRPanel_Compute_score_linear_with_theta(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP ThetaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1034,15 +1038,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type Theta(ThetaSEXP);
-    Rcpp::traits::input_parameter< const double >::type sigma_sum(sigma_sumSEXP);
-    Rcpp::traits::input_parameter< const double >::type phi(phiSEXP);
-    rcpp_result_gen = Rcpp::wrap(Compute_obj_probit_with_theta(X, Y, beta, Theta, sigma_sum, phi));
+    rcpp_result_gen = Rcpp::wrap(Compute_score_linear_with_theta(X, Y, beta, Theta));
     return rcpp_result_gen;
 END_RCPP
 }
-// Compute_obj_probit_with_theta_FE
-double Compute_obj_probit_with_theta_FE(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericVector& fe_N, const NumericVector& fe_T, const NumericMatrix& Theta, const double sigma_sum, const double phi);
-RcppExport SEXP _NNRPanel_Compute_obj_probit_with_theta_FE(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP fe_NSEXP, SEXP fe_TSEXP, SEXP ThetaSEXP, SEXP sigma_sumSEXP, SEXP phiSEXP) {
+// Compute_score_linear_with_theta_FE
+List Compute_score_linear_with_theta_FE(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericVector& fe_N, const NumericVector& fe_T, const NumericMatrix& Theta);
+RcppExport SEXP _NNRPanel_Compute_score_linear_with_theta_FE(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP fe_NSEXP, SEXP fe_TSEXP, SEXP ThetaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1051,16 +1053,80 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type fe_N(fe_NSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type fe_T(fe_TSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Theta(ThetaSEXP);
+    rcpp_result_gen = Rcpp::wrap(Compute_score_linear_with_theta_FE(X, Y, beta, fe_N, fe_T, Theta));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Compute_score_linear_with_LR
+List Compute_score_linear_with_LR(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericMatrix& L, const NumericMatrix& R);
+RcppExport SEXP _NNRPanel_Compute_score_linear_with_LR(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP LSEXP, SEXP RSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type L(LSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type R(RSEXP);
+    rcpp_result_gen = Rcpp::wrap(Compute_score_linear_with_LR(X, Y, beta, L, R));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Compute_score_linear_with_LR_FE
+List Compute_score_linear_with_LR_FE(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericVector& fe_N, const NumericVector& fe_T, const NumericMatrix& L, const NumericMatrix& R);
+RcppExport SEXP _NNRPanel_Compute_score_linear_with_LR_FE(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP fe_NSEXP, SEXP fe_TSEXP, SEXP LSEXP, SEXP RSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type fe_N(fe_NSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type fe_T(fe_TSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type L(LSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type R(RSEXP);
+    rcpp_result_gen = Rcpp::wrap(Compute_score_linear_with_LR_FE(X, Y, beta, fe_N, fe_T, L, R));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Compute_obj_linear_with_theta
+double Compute_obj_linear_with_theta(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericMatrix& Theta, const double sigma_sum, const double phi);
+RcppExport SEXP _NNRPanel_Compute_obj_linear_with_theta(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP ThetaSEXP, SEXP sigma_sumSEXP, SEXP phiSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type Theta(ThetaSEXP);
     Rcpp::traits::input_parameter< const double >::type sigma_sum(sigma_sumSEXP);
     Rcpp::traits::input_parameter< const double >::type phi(phiSEXP);
-    rcpp_result_gen = Rcpp::wrap(Compute_obj_probit_with_theta_FE(X, Y, beta, fe_N, fe_T, Theta, sigma_sum, phi));
+    rcpp_result_gen = Rcpp::wrap(Compute_obj_linear_with_theta(X, Y, beta, Theta, sigma_sum, phi));
     return rcpp_result_gen;
 END_RCPP
 }
-// Compute_obj_probit_with_LR
-double Compute_obj_probit_with_LR(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericMatrix& L, const NumericMatrix& R);
-RcppExport SEXP _NNRPanel_Compute_obj_probit_with_LR(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP LSEXP, SEXP RSEXP) {
+// Compute_obj_linear_with_theta_FE
+double Compute_obj_linear_with_theta_FE(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericVector& fe_N, const NumericVector& fe_T, const NumericMatrix& Theta, const double sigma_sum, const double phi);
+RcppExport SEXP _NNRPanel_Compute_obj_linear_with_theta_FE(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP fe_NSEXP, SEXP fe_TSEXP, SEXP ThetaSEXP, SEXP sigma_sumSEXP, SEXP phiSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type fe_N(fe_NSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type fe_T(fe_TSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Theta(ThetaSEXP);
+    Rcpp::traits::input_parameter< const double >::type sigma_sum(sigma_sumSEXP);
+    Rcpp::traits::input_parameter< const double >::type phi(phiSEXP);
+    rcpp_result_gen = Rcpp::wrap(Compute_obj_linear_with_theta_FE(X, Y, beta, fe_N, fe_T, Theta, sigma_sum, phi));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Compute_obj_linear_with_LR
+double Compute_obj_linear_with_LR(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericMatrix& L, const NumericMatrix& R);
+RcppExport SEXP _NNRPanel_Compute_obj_linear_with_LR(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP LSEXP, SEXP RSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1069,13 +1135,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type L(LSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type R(RSEXP);
-    rcpp_result_gen = Rcpp::wrap(Compute_obj_probit_with_LR(X, Y, beta, L, R));
+    rcpp_result_gen = Rcpp::wrap(Compute_obj_linear_with_LR(X, Y, beta, L, R));
     return rcpp_result_gen;
 END_RCPP
 }
-// Compute_obj_probit_with_LR_FE
-double Compute_obj_probit_with_LR_FE(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericVector& fe_N, const NumericVector& fe_T, const NumericMatrix& L, const NumericMatrix& R);
-RcppExport SEXP _NNRPanel_Compute_obj_probit_with_LR_FE(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP fe_NSEXP, SEXP fe_TSEXP, SEXP LSEXP, SEXP RSEXP) {
+// Compute_obj_linear_with_LR_FE
+double Compute_obj_linear_with_LR_FE(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericVector& fe_N, const NumericVector& fe_T, const NumericMatrix& L, const NumericMatrix& R);
+RcppExport SEXP _NNRPanel_Compute_obj_linear_with_LR_FE(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP fe_NSEXP, SEXP fe_TSEXP, SEXP LSEXP, SEXP RSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1086,13 +1152,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericVector& >::type fe_T(fe_TSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type L(LSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type R(RSEXP);
-    rcpp_result_gen = Rcpp::wrap(Compute_obj_probit_with_LR_FE(X, Y, beta, fe_N, fe_T, L, R));
+    rcpp_result_gen = Rcpp::wrap(Compute_obj_linear_with_LR_FE(X, Y, beta, fe_N, fe_T, L, R));
     return rcpp_result_gen;
 END_RCPP
 }
-// Compute_first_order_probit_with_LR
-NumericMatrix Compute_first_order_probit_with_LR(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericMatrix& L, const NumericMatrix& R);
-RcppExport SEXP _NNRPanel_Compute_first_order_probit_with_LR(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP LSEXP, SEXP RSEXP) {
+// Compute_first_order_linear_with_LR
+NumericMatrix Compute_first_order_linear_with_LR(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericMatrix& L, const NumericMatrix& R);
+RcppExport SEXP _NNRPanel_Compute_first_order_linear_with_LR(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP LSEXP, SEXP RSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1101,22 +1167,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type L(LSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type R(RSEXP);
-    rcpp_result_gen = Rcpp::wrap(Compute_first_order_probit_with_LR(X, Y, beta, L, R));
-    return rcpp_result_gen;
-END_RCPP
-}
-// Compute_second_order_probit_with_LR
-NumericMatrix Compute_second_order_probit_with_LR(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericMatrix& L, const NumericMatrix& R);
-RcppExport SEXP _NNRPanel_Compute_second_order_probit_with_LR(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP LSEXP, SEXP RSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const List& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type L(LSEXP);
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type R(RSEXP);
-    rcpp_result_gen = Rcpp::wrap(Compute_second_order_probit_with_LR(X, Y, beta, L, R));
+    rcpp_result_gen = Rcpp::wrap(Compute_first_order_linear_with_LR(X, Y, beta, L, R));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1633,6 +1684,226 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// Compute_logl_probit_with_theta
+NumericMatrix Compute_logl_probit_with_theta(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericMatrix& Theta);
+RcppExport SEXP _NNRPanel_Compute_logl_probit_with_theta(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP ThetaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Theta(ThetaSEXP);
+    rcpp_result_gen = Rcpp::wrap(Compute_logl_probit_with_theta(X, Y, beta, Theta));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Compute_logl_probit_with_theta_FE
+NumericMatrix Compute_logl_probit_with_theta_FE(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericVector& fe_N, const NumericVector& fe_T, const NumericMatrix& Theta);
+RcppExport SEXP _NNRPanel_Compute_logl_probit_with_theta_FE(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP fe_NSEXP, SEXP fe_TSEXP, SEXP ThetaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type fe_N(fe_NSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type fe_T(fe_TSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Theta(ThetaSEXP);
+    rcpp_result_gen = Rcpp::wrap(Compute_logl_probit_with_theta_FE(X, Y, beta, fe_N, fe_T, Theta));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Compute_logl_probit_with_LR
+NumericMatrix Compute_logl_probit_with_LR(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericMatrix& L, const NumericMatrix& R);
+RcppExport SEXP _NNRPanel_Compute_logl_probit_with_LR(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP LSEXP, SEXP RSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type L(LSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type R(RSEXP);
+    rcpp_result_gen = Rcpp::wrap(Compute_logl_probit_with_LR(X, Y, beta, L, R));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Compute_logl_probit_with_LR_FE
+NumericMatrix Compute_logl_probit_with_LR_FE(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericVector& fe_N, const NumericVector& fe_T, const NumericMatrix& L, const NumericMatrix& R);
+RcppExport SEXP _NNRPanel_Compute_logl_probit_with_LR_FE(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP fe_NSEXP, SEXP fe_TSEXP, SEXP LSEXP, SEXP RSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type fe_N(fe_NSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type fe_T(fe_TSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type L(LSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type R(RSEXP);
+    rcpp_result_gen = Rcpp::wrap(Compute_logl_probit_with_LR_FE(X, Y, beta, fe_N, fe_T, L, R));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Compute_score_probit_with_theta
+List Compute_score_probit_with_theta(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericMatrix& Theta);
+RcppExport SEXP _NNRPanel_Compute_score_probit_with_theta(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP ThetaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Theta(ThetaSEXP);
+    rcpp_result_gen = Rcpp::wrap(Compute_score_probit_with_theta(X, Y, beta, Theta));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Compute_score_probit_with_theta_FE
+List Compute_score_probit_with_theta_FE(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericVector& fe_N, const NumericVector& fe_T, const NumericMatrix& Theta);
+RcppExport SEXP _NNRPanel_Compute_score_probit_with_theta_FE(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP fe_NSEXP, SEXP fe_TSEXP, SEXP ThetaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type fe_N(fe_NSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type fe_T(fe_TSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Theta(ThetaSEXP);
+    rcpp_result_gen = Rcpp::wrap(Compute_score_probit_with_theta_FE(X, Y, beta, fe_N, fe_T, Theta));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Compute_score_probit_with_LR
+List Compute_score_probit_with_LR(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericMatrix& L, const NumericMatrix& R);
+RcppExport SEXP _NNRPanel_Compute_score_probit_with_LR(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP LSEXP, SEXP RSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type L(LSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type R(RSEXP);
+    rcpp_result_gen = Rcpp::wrap(Compute_score_probit_with_LR(X, Y, beta, L, R));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Compute_score_probit_with_LR_FE
+List Compute_score_probit_with_LR_FE(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericVector& fe_N, const NumericVector& fe_T, const NumericMatrix& L, const NumericMatrix& R);
+RcppExport SEXP _NNRPanel_Compute_score_probit_with_LR_FE(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP fe_NSEXP, SEXP fe_TSEXP, SEXP LSEXP, SEXP RSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type fe_N(fe_NSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type fe_T(fe_TSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type L(LSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type R(RSEXP);
+    rcpp_result_gen = Rcpp::wrap(Compute_score_probit_with_LR_FE(X, Y, beta, fe_N, fe_T, L, R));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Compute_obj_probit_with_theta
+double Compute_obj_probit_with_theta(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericMatrix& Theta, const double sigma_sum, const double phi);
+RcppExport SEXP _NNRPanel_Compute_obj_probit_with_theta(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP ThetaSEXP, SEXP sigma_sumSEXP, SEXP phiSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Theta(ThetaSEXP);
+    Rcpp::traits::input_parameter< const double >::type sigma_sum(sigma_sumSEXP);
+    Rcpp::traits::input_parameter< const double >::type phi(phiSEXP);
+    rcpp_result_gen = Rcpp::wrap(Compute_obj_probit_with_theta(X, Y, beta, Theta, sigma_sum, phi));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Compute_obj_probit_with_theta_FE
+double Compute_obj_probit_with_theta_FE(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericVector& fe_N, const NumericVector& fe_T, const NumericMatrix& Theta, const double sigma_sum, const double phi);
+RcppExport SEXP _NNRPanel_Compute_obj_probit_with_theta_FE(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP fe_NSEXP, SEXP fe_TSEXP, SEXP ThetaSEXP, SEXP sigma_sumSEXP, SEXP phiSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type fe_N(fe_NSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type fe_T(fe_TSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Theta(ThetaSEXP);
+    Rcpp::traits::input_parameter< const double >::type sigma_sum(sigma_sumSEXP);
+    Rcpp::traits::input_parameter< const double >::type phi(phiSEXP);
+    rcpp_result_gen = Rcpp::wrap(Compute_obj_probit_with_theta_FE(X, Y, beta, fe_N, fe_T, Theta, sigma_sum, phi));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Compute_obj_probit_with_LR
+double Compute_obj_probit_with_LR(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericMatrix& L, const NumericMatrix& R);
+RcppExport SEXP _NNRPanel_Compute_obj_probit_with_LR(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP LSEXP, SEXP RSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type L(LSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type R(RSEXP);
+    rcpp_result_gen = Rcpp::wrap(Compute_obj_probit_with_LR(X, Y, beta, L, R));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Compute_obj_probit_with_LR_FE
+double Compute_obj_probit_with_LR_FE(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericVector& fe_N, const NumericVector& fe_T, const NumericMatrix& L, const NumericMatrix& R);
+RcppExport SEXP _NNRPanel_Compute_obj_probit_with_LR_FE(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP fe_NSEXP, SEXP fe_TSEXP, SEXP LSEXP, SEXP RSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type fe_N(fe_NSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type fe_T(fe_TSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type L(LSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type R(RSEXP);
+    rcpp_result_gen = Rcpp::wrap(Compute_obj_probit_with_LR_FE(X, Y, beta, fe_N, fe_T, L, R));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Compute_first_order_probit_with_LR
+NumericMatrix Compute_first_order_probit_with_LR(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericMatrix& L, const NumericMatrix& R);
+RcppExport SEXP _NNRPanel_Compute_first_order_probit_with_LR(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP LSEXP, SEXP RSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type L(LSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type R(RSEXP);
+    rcpp_result_gen = Rcpp::wrap(Compute_first_order_probit_with_LR(X, Y, beta, L, R));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Compute_second_order_probit_with_LR
+NumericMatrix Compute_second_order_probit_with_LR(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericMatrix& L, const NumericMatrix& R);
+RcppExport SEXP _NNRPanel_Compute_second_order_probit_with_LR(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP LSEXP, SEXP RSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type L(LSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type R(RSEXP);
+    rcpp_result_gen = Rcpp::wrap(Compute_second_order_probit_with_LR(X, Y, beta, L, R));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_NNRPanel_Compute_E_step", (DL_FUNC) &_NNRPanel_Compute_E_step, 3},
@@ -1665,6 +1936,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_NNRPanel_Compute_bias_corr_poisson_robust", (DL_FUNC) &_NNRPanel_Compute_bias_corr_poisson_robust, 6},
     {"_NNRPanel_Compute_bias_corr_probit", (DL_FUNC) &_NNRPanel_Compute_bias_corr_probit, 6},
     {"_NNRPanel_Compute_bias_corr_probit_robust", (DL_FUNC) &_NNRPanel_Compute_bias_corr_probit_robust, 6},
+    {"_NNRPanel_Compute_bias_corr_linear", (DL_FUNC) &_NNRPanel_Compute_bias_corr_linear, 6},
+    {"_NNRPanel_Compute_bias_corr_linear_robust", (DL_FUNC) &_NNRPanel_Compute_bias_corr_linear_robust, 6},
     {"_NNRPanel_Update_beta", (DL_FUNC) &_NNRPanel_Update_beta, 3},
     {"_NNRPanel_Update_theta", (DL_FUNC) &_NNRPanel_Update_theta, 4},
     {"_NNRPanel_Update_LR", (DL_FUNC) &_NNRPanel_Update_LR, 6},
@@ -1679,6 +1952,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_NNRPanel_MLE_poisson_LR", (DL_FUNC) &_NNRPanel_MLE_poisson_LR, 8},
     {"_NNRPanel_fit_probit", (DL_FUNC) &_NNRPanel_fit_probit, 6},
     {"_NNRPanel_MLE_probit", (DL_FUNC) &_NNRPanel_MLE_probit, 8},
+    {"_NNRPanel_fit_linear", (DL_FUNC) &_NNRPanel_fit_linear, 6},
+    {"_NNRPanel_MLE_linear", (DL_FUNC) &_NNRPanel_MLE_linear, 8},
     {"_NNRPanel_Compute_logl_poisson_with_theta_FE_network", (DL_FUNC) &_NNRPanel_Compute_logl_poisson_with_theta_FE_network, 6},
     {"_NNRPanel_Compute_logl_poisson_with_LR_FE_network", (DL_FUNC) &_NNRPanel_Compute_logl_poisson_with_LR_FE_network, 7},
     {"_NNRPanel_Compute_score_poisson_with_theta_FE_network", (DL_FUNC) &_NNRPanel_Compute_score_poisson_with_theta_FE_network, 6},
@@ -1693,20 +1968,19 @@ static const R_CallMethodDef CallEntries[] = {
     {"_NNRPanel_Update_FE_network", (DL_FUNC) &_NNRPanel_Update_FE_network, 6},
     {"_NNRPanel_fit_poisson_FE_network", (DL_FUNC) &_NNRPanel_fit_poisson_FE_network, 9},
     {"_NNRPanel_MLE_poisson_FE_network", (DL_FUNC) &_NNRPanel_MLE_poisson_FE_network, 10},
-    {"_NNRPanel_Compute_logl_probit_with_theta", (DL_FUNC) &_NNRPanel_Compute_logl_probit_with_theta, 4},
-    {"_NNRPanel_Compute_logl_probit_with_theta_FE", (DL_FUNC) &_NNRPanel_Compute_logl_probit_with_theta_FE, 6},
-    {"_NNRPanel_Compute_logl_probit_with_LR", (DL_FUNC) &_NNRPanel_Compute_logl_probit_with_LR, 5},
-    {"_NNRPanel_Compute_logl_probit_with_LR_FE", (DL_FUNC) &_NNRPanel_Compute_logl_probit_with_LR_FE, 7},
-    {"_NNRPanel_Compute_score_probit_with_theta", (DL_FUNC) &_NNRPanel_Compute_score_probit_with_theta, 4},
-    {"_NNRPanel_Compute_score_probit_with_theta_FE", (DL_FUNC) &_NNRPanel_Compute_score_probit_with_theta_FE, 6},
-    {"_NNRPanel_Compute_score_probit_with_LR", (DL_FUNC) &_NNRPanel_Compute_score_probit_with_LR, 5},
-    {"_NNRPanel_Compute_score_probit_with_LR_FE", (DL_FUNC) &_NNRPanel_Compute_score_probit_with_LR_FE, 7},
-    {"_NNRPanel_Compute_obj_probit_with_theta", (DL_FUNC) &_NNRPanel_Compute_obj_probit_with_theta, 6},
-    {"_NNRPanel_Compute_obj_probit_with_theta_FE", (DL_FUNC) &_NNRPanel_Compute_obj_probit_with_theta_FE, 8},
-    {"_NNRPanel_Compute_obj_probit_with_LR", (DL_FUNC) &_NNRPanel_Compute_obj_probit_with_LR, 5},
-    {"_NNRPanel_Compute_obj_probit_with_LR_FE", (DL_FUNC) &_NNRPanel_Compute_obj_probit_with_LR_FE, 7},
-    {"_NNRPanel_Compute_first_order_probit_with_LR", (DL_FUNC) &_NNRPanel_Compute_first_order_probit_with_LR, 5},
-    {"_NNRPanel_Compute_second_order_probit_with_LR", (DL_FUNC) &_NNRPanel_Compute_second_order_probit_with_LR, 5},
+    {"_NNRPanel_Compute_logl_linear_with_theta", (DL_FUNC) &_NNRPanel_Compute_logl_linear_with_theta, 4},
+    {"_NNRPanel_Compute_logl_linear_with_theta_FE", (DL_FUNC) &_NNRPanel_Compute_logl_linear_with_theta_FE, 6},
+    {"_NNRPanel_Compute_logl_linear_with_LR", (DL_FUNC) &_NNRPanel_Compute_logl_linear_with_LR, 5},
+    {"_NNRPanel_Compute_logl_linear_with_LR_FE", (DL_FUNC) &_NNRPanel_Compute_logl_linear_with_LR_FE, 7},
+    {"_NNRPanel_Compute_score_linear_with_theta", (DL_FUNC) &_NNRPanel_Compute_score_linear_with_theta, 4},
+    {"_NNRPanel_Compute_score_linear_with_theta_FE", (DL_FUNC) &_NNRPanel_Compute_score_linear_with_theta_FE, 6},
+    {"_NNRPanel_Compute_score_linear_with_LR", (DL_FUNC) &_NNRPanel_Compute_score_linear_with_LR, 5},
+    {"_NNRPanel_Compute_score_linear_with_LR_FE", (DL_FUNC) &_NNRPanel_Compute_score_linear_with_LR_FE, 7},
+    {"_NNRPanel_Compute_obj_linear_with_theta", (DL_FUNC) &_NNRPanel_Compute_obj_linear_with_theta, 6},
+    {"_NNRPanel_Compute_obj_linear_with_theta_FE", (DL_FUNC) &_NNRPanel_Compute_obj_linear_with_theta_FE, 8},
+    {"_NNRPanel_Compute_obj_linear_with_LR", (DL_FUNC) &_NNRPanel_Compute_obj_linear_with_LR, 5},
+    {"_NNRPanel_Compute_obj_linear_with_LR_FE", (DL_FUNC) &_NNRPanel_Compute_obj_linear_with_LR_FE, 7},
+    {"_NNRPanel_Compute_first_order_linear_with_LR", (DL_FUNC) &_NNRPanel_Compute_first_order_linear_with_LR, 5},
     {"_NNRPanel_Compute_logl_logit_with_theta", (DL_FUNC) &_NNRPanel_Compute_logl_logit_with_theta, 4},
     {"_NNRPanel_Compute_logl_logit_with_theta_FE", (DL_FUNC) &_NNRPanel_Compute_logl_logit_with_theta_FE, 6},
     {"_NNRPanel_Compute_logl_logit_with_LR", (DL_FUNC) &_NNRPanel_Compute_logl_logit_with_LR, 5},
@@ -1740,6 +2014,20 @@ static const R_CallMethodDef CallEntries[] = {
     {"_NNRPanel_Compute_second_order_poisson_with_LR", (DL_FUNC) &_NNRPanel_Compute_second_order_poisson_with_LR, 4},
     {"_NNRPanel_Compute_second_order_poisson_with_LR_FE", (DL_FUNC) &_NNRPanel_Compute_second_order_poisson_with_LR_FE, 6},
     {"_NNRPanel_Sim_dynamic_poisson", (DL_FUNC) &_NNRPanel_Sim_dynamic_poisson, 4},
+    {"_NNRPanel_Compute_logl_probit_with_theta", (DL_FUNC) &_NNRPanel_Compute_logl_probit_with_theta, 4},
+    {"_NNRPanel_Compute_logl_probit_with_theta_FE", (DL_FUNC) &_NNRPanel_Compute_logl_probit_with_theta_FE, 6},
+    {"_NNRPanel_Compute_logl_probit_with_LR", (DL_FUNC) &_NNRPanel_Compute_logl_probit_with_LR, 5},
+    {"_NNRPanel_Compute_logl_probit_with_LR_FE", (DL_FUNC) &_NNRPanel_Compute_logl_probit_with_LR_FE, 7},
+    {"_NNRPanel_Compute_score_probit_with_theta", (DL_FUNC) &_NNRPanel_Compute_score_probit_with_theta, 4},
+    {"_NNRPanel_Compute_score_probit_with_theta_FE", (DL_FUNC) &_NNRPanel_Compute_score_probit_with_theta_FE, 6},
+    {"_NNRPanel_Compute_score_probit_with_LR", (DL_FUNC) &_NNRPanel_Compute_score_probit_with_LR, 5},
+    {"_NNRPanel_Compute_score_probit_with_LR_FE", (DL_FUNC) &_NNRPanel_Compute_score_probit_with_LR_FE, 7},
+    {"_NNRPanel_Compute_obj_probit_with_theta", (DL_FUNC) &_NNRPanel_Compute_obj_probit_with_theta, 6},
+    {"_NNRPanel_Compute_obj_probit_with_theta_FE", (DL_FUNC) &_NNRPanel_Compute_obj_probit_with_theta_FE, 8},
+    {"_NNRPanel_Compute_obj_probit_with_LR", (DL_FUNC) &_NNRPanel_Compute_obj_probit_with_LR, 5},
+    {"_NNRPanel_Compute_obj_probit_with_LR_FE", (DL_FUNC) &_NNRPanel_Compute_obj_probit_with_LR_FE, 7},
+    {"_NNRPanel_Compute_first_order_probit_with_LR", (DL_FUNC) &_NNRPanel_Compute_first_order_probit_with_LR, 5},
+    {"_NNRPanel_Compute_second_order_probit_with_LR", (DL_FUNC) &_NNRPanel_Compute_second_order_probit_with_LR, 5},
     {NULL, NULL, 0}
 };
 
