@@ -77,7 +77,7 @@ calculate_tuning_parameter <- function(data_frame, func, delta, R_max = 5, s = 1
         Y_fit <- t(matrix(Y_fit, T, N))
     }
     if(func=="linear"){
-        TW_model <- fixest::felos(formula, data = data_frame)
+        TW_model <- fixest::feols(formula, data = data_frame)
         Y_fit <- fitted(TW_model)
         Y_fit <- t(matrix(Y_fit, T, N))
     }
