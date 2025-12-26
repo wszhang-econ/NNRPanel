@@ -1,0 +1,26 @@
+Package: NNRPanel
+Type: Package
+Title: Tractable Estimation of Nonlinear Panels with Interactive Fixed
+        Effects
+Version: 0.0
+Encoding: UTF-8
+Date: 2024-07-20
+Authors@R: c(person("Andrei", "Aeleneev", role = "aut",
+                     email = "a.zeleneev@ucl.ac.uk"),
+             person("Weisheng", "Zhang", role = c("aut", "cre"),
+                     email = "wszhang.econ@gmail.com"))
+Author: Andrei Zeleneev [aut],
+ 	    Weisheng Zhang [aut, cre]
+Maintainer: Weisheng Zhang <wszhang.econ@gmail.com>
+Description: Two-step estimation of nonlinear Panel and network model. 
+             In the first step, we convexify the optimization problem using nuclear norm regularization (NNR) 
+             and obtain preliminary NNR estimators of the parameters, including the fixed effects. 
+             In the seccon step, we find the global solution of the original optimization problem 
+             using a standard gradient descent method initialized at these preliminary estimates.
+License: GPL-3
+Imports: Rcpp (>= 1.0.11), RcppEigen, purrr, tidyr, dplyr, magrittr,
+        tibble, ggplot2, readr, igraph, lubridate, fixest, MASS
+LinkingTo: Rcpp, RcppEigen
+RoxygenNote: 7.3.3
+NeedsCompilation: yes
+Packaged: 2025-12-26 01:59:09 UTC; weishengzhang

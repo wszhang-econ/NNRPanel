@@ -1,0 +1,4 @@
+useDynLib(NNRPanel)
+importFrom(Rcpp, evalCpp)
+exportPattern("^[[:alpha:]]+")
+import(magrittr)
