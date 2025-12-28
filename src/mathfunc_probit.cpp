@@ -332,7 +332,7 @@ NumericMatrix Compute_first_order_probit_with_LR(const List & X, const NumericMa
                                                 const NumericMatrix & L, const NumericMatrix & R){
     const Map<MatrixXd> Y_ (as <Map<MatrixXd>> (Y));
     const int N = Y_.rows();
-    const int T = Y_.rows();
+    const int T = Y_.cols();
     double epsilon = 1e-10;
 
     NumericMatrix first_score = Compute_index_with_LR(X, beta, L, R);

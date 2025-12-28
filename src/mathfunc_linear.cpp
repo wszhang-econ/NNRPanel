@@ -241,7 +241,7 @@ NumericMatrix Compute_first_order_linear_with_LR(const List & X, const NumericMa
                                                  const NumericMatrix & L, const NumericMatrix & R){
     const Map<MatrixXd> Y_ (as <Map<MatrixXd>> (Y));
     const int N = Y_.rows();
-    const int T = Y_.rows();
+    const int T = Y_.cols();
 
     NumericMatrix first_score = Compute_index_with_LR(X, beta, L, R);
     Map<MatrixXd> first_score_ (as <Map<MatrixXd>> (first_score));

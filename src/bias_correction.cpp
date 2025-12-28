@@ -449,7 +449,7 @@ NumericMatrix Compute_bias_corr_D_probit(const NumericVector & beta,
             }
             D_(d, 0) = D_(d, 0) + (D_1  );
         }
-        D_(d, 0) = -1.0 * D_(d, 0)/T;
+        D_(d, 0) = -1.0 / 2.0 * D_(d, 0)/T;
     }
     
     return wrap(D_);
@@ -561,7 +561,7 @@ NumericMatrix Compute_bias_corr_B_probit(const NumericVector & beta,
             B_(d, 0) = B_(d, 0) + (B_cov_.sum());
             
         }
-        B_(d, 0) = -1.0 * B_(d, 0)/N;
+        B_(d, 0) = -1.0 / 2.0 * B_(d, 0)/N;
     }
     
     return wrap(B_);
