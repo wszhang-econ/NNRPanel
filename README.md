@@ -62,5 +62,5 @@ est <- NNRPanel_estimate(data_frame, func = "logit", R_max = 5, R_true = 2, delt
 ## Acknowledgements
 I thank Wei Miao for careful testing of the package and for helpful comments on the implementation.
 
-#### References
+## References
 Andrei Zeleneev, Weisheng Zhang (2025). <b>Tractable Estimation of Nonlinear Panels with Interactive Fixed Effects</b> [<a href="https://arxiv.org/abs/2511.15427">link</a>]
