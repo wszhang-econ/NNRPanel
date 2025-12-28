@@ -73,5 +73,13 @@ NumericMatrix Compute_first_order_probit_with_LR(const List & X, const NumericMa
 NumericMatrix Compute_second_order_probit_with_LR(const List & X, const NumericMatrix & Y, const NumericVector & beta, 
                                                  const NumericMatrix & L, const NumericMatrix & R);
 
+NumericMatrix Compute_third_order_probit_with_LR(const List & X, const NumericMatrix & Y, 
+                                                const NumericVector & beta, 
+                                                const NumericMatrix & L, const NumericMatrix & R);
 #endif 
 
+    
+    
+    
+    
+    

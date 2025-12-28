@@ -85,16 +85,8 @@ Compute_bias_corr_D <- function(first_order, second_order, third_order, Lambda, 
     .Call('_NNRPanel_Compute_bias_corr_D', PACKAGE = 'NNRPanel', first_order, second_order, third_order, Lambda, X_res_)
 }
 
-Compute_bias_corr_D_probit <- function(beta, first_order, second_order, Lambda, X_res_) {
-    .Call('_NNRPanel_Compute_bias_corr_D_probit', PACKAGE = 'NNRPanel', beta, first_order, second_order, Lambda, X_res_)
-}
-
 Compute_bias_corr_B <- function(first_order, second_order, third_order, Gamma, X_res_, truc) {
     .Call('_NNRPanel_Compute_bias_corr_B', PACKAGE = 'NNRPanel', first_order, second_order, third_order, Gamma, X_res_, truc)
-}
-
-Compute_bias_corr_B_probit <- function(beta, first_order, second_order, Gamma, X_res_, truc) {
-    .Call('_NNRPanel_Compute_bias_corr_B_probit', PACKAGE = 'NNRPanel', beta, first_order, second_order, Gamma, X_res_, truc)
 }
 
 Compute_bias_corr_logit <- function(Y, X, beta, L, R, truc) {
@@ -487,5 +479,9 @@ Compute_first_order_probit_with_LR <- function(X, Y, beta, L, R) {
 
 Compute_second_order_probit_with_LR <- function(X, Y, beta, L, R) {
     .Call('_NNRPanel_Compute_second_order_probit_with_LR', PACKAGE = 'NNRPanel', X, Y, beta, L, R)
+}
+
+Compute_third_order_probit_with_LR <- function(X, Y, beta, L, R) {
+    .Call('_NNRPanel_Compute_third_order_probit_with_LR', PACKAGE = 'NNRPanel', X, Y, beta, L, R)
 }
 

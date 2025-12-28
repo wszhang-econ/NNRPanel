@@ -285,14 +285,14 @@ NumericMatrix Compute_second_order_logit_with_LR(const List & X, const NumericVe
 
 NumericMatrix Compute_third_order_logit_with_LR(const List & X, const NumericVector & beta, 
                                                 const NumericMatrix & L, const NumericMatrix & R){
-    NumericMatrix thrid_score = Compute_index_with_LR(X, beta, L, R);
-    Map<MatrixXd> thrid_score_ (as <Map<MatrixXd>> (thrid_score));
+    NumericMatrix third_score = Compute_index_with_LR(X, beta, L, R);
+    Map<MatrixXd> third_score_ (as <Map<MatrixXd>> (third_score));
     
     double epsilon = 1e-10;
-    thrid_score_ = (thrid_score_.array().exp()+ 1).inverse() + epsilon;
-    thrid_score_ = 1 - thrid_score_.array();
-    thrid_score_ = thrid_score_.array() * (1 - thrid_score_.array()) * (2 * thrid_score_.array()-1);
-    return wrap(thrid_score_);
+    third_score_ = (third_score_.array().exp()+ 1).inverse() + epsilon;
+    third_score_ = 1 - third_score_.array();
+    third_score_ = third_score_.array() * (1 - third_score_.array()) * (2 * third_score_.array()-1);
+    return wrap(third_score_);
 }
 
 

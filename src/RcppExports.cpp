@@ -289,21 +289,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// Compute_bias_corr_D_probit
-NumericMatrix Compute_bias_corr_D_probit(const NumericVector& beta, const NumericMatrix& first_order, const NumericMatrix& second_order, const NumericMatrix& Lambda, const std::vector<std::vector<Eigen::MatrixXd>>& X_res_);
-RcppExport SEXP _NNRPanel_Compute_bias_corr_D_probit(SEXP betaSEXP, SEXP first_orderSEXP, SEXP second_orderSEXP, SEXP LambdaSEXP, SEXP X_res_SEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type first_order(first_orderSEXP);
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type second_order(second_orderSEXP);
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type Lambda(LambdaSEXP);
-    Rcpp::traits::input_parameter< const std::vector<std::vector<Eigen::MatrixXd>>& >::type X_res_(X_res_SEXP);
-    rcpp_result_gen = Rcpp::wrap(Compute_bias_corr_D_probit(beta, first_order, second_order, Lambda, X_res_));
-    return rcpp_result_gen;
-END_RCPP
-}
 // Compute_bias_corr_B
 NumericMatrix Compute_bias_corr_B(const NumericMatrix& first_order, const NumericMatrix& second_order, const NumericMatrix& third_order, const NumericMatrix& Gamma, const std::vector<std::vector<Eigen::MatrixXd>>& X_res_, const int truc);
 RcppExport SEXP _NNRPanel_Compute_bias_corr_B(SEXP first_orderSEXP, SEXP second_orderSEXP, SEXP third_orderSEXP, SEXP GammaSEXP, SEXP X_res_SEXP, SEXP trucSEXP) {
@@ -317,22 +302,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const std::vector<std::vector<Eigen::MatrixXd>>& >::type X_res_(X_res_SEXP);
     Rcpp::traits::input_parameter< const int >::type truc(trucSEXP);
     rcpp_result_gen = Rcpp::wrap(Compute_bias_corr_B(first_order, second_order, third_order, Gamma, X_res_, truc));
-    return rcpp_result_gen;
-END_RCPP
-}
-// Compute_bias_corr_B_probit
-NumericMatrix Compute_bias_corr_B_probit(const NumericVector& beta, const NumericMatrix& first_order, const NumericMatrix& second_order, const NumericMatrix& Gamma, const std::vector<std::vector<Eigen::MatrixXd>>& X_res_, const int truc);
-RcppExport SEXP _NNRPanel_Compute_bias_corr_B_probit(SEXP betaSEXP, SEXP first_orderSEXP, SEXP second_orderSEXP, SEXP GammaSEXP, SEXP X_res_SEXP, SEXP trucSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type first_order(first_orderSEXP);
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type second_order(second_orderSEXP);
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type Gamma(GammaSEXP);
-    Rcpp::traits::input_parameter< const std::vector<std::vector<Eigen::MatrixXd>>& >::type X_res_(X_res_SEXP);
-    Rcpp::traits::input_parameter< const int >::type truc(trucSEXP);
-    rcpp_result_gen = Rcpp::wrap(Compute_bias_corr_B_probit(beta, first_order, second_order, Gamma, X_res_, truc));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1904,6 +1873,21 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// Compute_third_order_probit_with_LR
+NumericMatrix Compute_third_order_probit_with_LR(const List& X, const NumericMatrix& Y, const NumericVector& beta, const NumericMatrix& L, const NumericMatrix& R);
+RcppExport SEXP _NNRPanel_Compute_third_order_probit_with_LR(SEXP XSEXP, SEXP YSEXP, SEXP betaSEXP, SEXP LSEXP, SEXP RSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type L(LSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type R(RSEXP);
+    rcpp_result_gen = Rcpp::wrap(Compute_third_order_probit_with_LR(X, Y, beta, L, R));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_NNRPanel_Compute_E_step", (DL_FUNC) &_NNRPanel_Compute_E_step, 3},
@@ -1927,9 +1911,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_NNRPanel_Compute_bias_corr_W", (DL_FUNC) &_NNRPanel_Compute_bias_corr_W, 2},
     {"_NNRPanel_Compute_bias_corr_V", (DL_FUNC) &_NNRPanel_Compute_bias_corr_V, 2},
     {"_NNRPanel_Compute_bias_corr_D", (DL_FUNC) &_NNRPanel_Compute_bias_corr_D, 5},
-    {"_NNRPanel_Compute_bias_corr_D_probit", (DL_FUNC) &_NNRPanel_Compute_bias_corr_D_probit, 5},
     {"_NNRPanel_Compute_bias_corr_B", (DL_FUNC) &_NNRPanel_Compute_bias_corr_B, 6},
-    {"_NNRPanel_Compute_bias_corr_B_probit", (DL_FUNC) &_NNRPanel_Compute_bias_corr_B_probit, 6},
     {"_NNRPanel_Compute_bias_corr_logit", (DL_FUNC) &_NNRPanel_Compute_bias_corr_logit, 6},
     {"_NNRPanel_Compute_bias_corr_logit_robust", (DL_FUNC) &_NNRPanel_Compute_bias_corr_logit_robust, 6},
     {"_NNRPanel_Compute_bias_corr_poisson", (DL_FUNC) &_NNRPanel_Compute_bias_corr_poisson, 6},
@@ -2028,6 +2010,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_NNRPanel_Compute_obj_probit_with_LR_FE", (DL_FUNC) &_NNRPanel_Compute_obj_probit_with_LR_FE, 7},
     {"_NNRPanel_Compute_first_order_probit_with_LR", (DL_FUNC) &_NNRPanel_Compute_first_order_probit_with_LR, 5},
     {"_NNRPanel_Compute_second_order_probit_with_LR", (DL_FUNC) &_NNRPanel_Compute_second_order_probit_with_LR, 5},
+    {"_NNRPanel_Compute_third_order_probit_with_LR", (DL_FUNC) &_NNRPanel_Compute_third_order_probit_with_LR, 5},
     {NULL, NULL, 0}
 };
 
