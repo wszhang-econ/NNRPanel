@@ -400,7 +400,7 @@ NumericMatrix Compute_second_order_probit_with_LR(const List & X, const NumericM
 
 
 
-
+/*
 // [[Rcpp::export]]
 
 NumericMatrix Compute_third_order_probit_with_LR(const List & X, const NumericMatrix & Y, 
@@ -432,12 +432,13 @@ NumericMatrix Compute_third_order_probit_with_LR(const List & X, const NumericMa
     third_score_ = (index_.array() * index_.array() - 1).array() * pdf_.array() 
         * (Y_.array() * (cdf_.array() + epsilon).inverse() - (1 - Y_.array()).array() * (1 - cdf_.array() + epsilon).inverse());
     third_score_ = third_score_.array() + 3.0 * index_.array() * pdf_.array() * pdf_.array()
-        * (Y_.array() *  (cdf_.array() * cdf_.array() + epsilon).inverse() - (1 - Y_.array()).array() * ((1 - cdf_.array()) * (1 - cdf_.array())  + epsilon).inverse());
+        * (Y_.array() *  (cdf_.array() * cdf_.array() + epsilon).inverse() + (1 - Y_.array()).array() * ((1 - cdf_.array()) * (1 - cdf_.array())  + epsilon).inverse());
     third_score_ = third_score_.array() + 2.0 *  pdf_.array() * pdf_.array() * pdf_.array()
         * (Y_.array() *  (cdf_.array() * cdf_.array()  * cdf_.array() + epsilon).inverse() - (1 - Y_.array()).array() * ((1 - cdf_.array()) * (1 - cdf_.array()) * (1 - cdf_.array())  + epsilon).inverse());
     third_score_ = -1.0 * third_score_.array();
     return wrap(third_score_);
 }
+*/
 
 
 

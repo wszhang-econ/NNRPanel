@@ -413,7 +413,7 @@ NumericMatrix Compute_bias_corr_D(const NumericMatrix & first_order,
 }
 
 
-/*
+
 // [[Rcpp::export]]
 
 NumericMatrix Compute_bias_corr_D_probit(const NumericVector & beta, 
@@ -445,7 +445,7 @@ NumericMatrix Compute_bias_corr_D_probit(const NumericVector & beta,
             double D_1 = 0.0;
             for (int i=0; i!=N; i++){
                 lambda_i_ = Lambda_.row(i);
-                D_1 = D_1 +  first_order_(i, t) * second_order_(i, t) * X_res_[i][t](d, 0) * X_res_[i][t](d, 0) * beta_(d) * lambda_i_.transpose() * D_3_ * lambda_i_;
+                D_1 = D_1 +  second_order_(i, t) * X_res_[i][t](d, 0) * X_res_[i][t](d, 0) * beta_(d) * lambda_i_.transpose() * D_3_ * lambda_i_;
             }
             D_(d, 0) = D_(d, 0) + (D_1  );
         }
@@ -454,7 +454,7 @@ NumericMatrix Compute_bias_corr_D_probit(const NumericVector & beta,
     
     return wrap(D_);
 }
-*/
+
 
 // [[Rcpp::export]]
 
@@ -513,7 +513,7 @@ NumericMatrix Compute_bias_corr_B(const NumericMatrix & first_order,
     return wrap(B_);
 }
 
-/*
+
 // [[Rcpp::export]]
 
 NumericMatrix Compute_bias_corr_B_probit(const NumericVector & beta,
@@ -567,7 +567,7 @@ NumericMatrix Compute_bias_corr_B_probit(const NumericVector & beta,
     
     return wrap(B_);
 }
-*/
+
 
 // [[Rcpp::export]]
 
@@ -835,14 +835,14 @@ List Compute_bias_corr_probit(const NumericMatrix & Y, const List & X,
     
     NumericMatrix first_order = Compute_first_order_probit_with_LR(X, Y, beta, L, R);
     NumericMatrix second_order = Compute_second_order_probit_with_LR(X, Y, beta, L, R);
-    NumericMatrix third_order = Compute_third_order_probit_with_LR(X, Y, beta, L, R);
+    //NumericMatrix third_order = Compute_third_order_probit_with_LR(X, Y, beta, L, R);
     
     
     std::vector<std::vector<Eigen::MatrixXd>> X_res_ = Create_X_res(X, L, R, second_order);
     
-    NumericMatrix B = Compute_bias_corr_B(first_order, second_order, third_order,
+    NumericMatrix B = Compute_bias_corr_B_probit(beta, first_order, second_order,
                                           R, X_res_, truc);
-    NumericMatrix D = Compute_bias_corr_D(first_order, second_order, third_order,
+    NumericMatrix D = Compute_bias_corr_D_probit(beta, first_order, second_order, 
                                           L, X_res_);
     NumericMatrix W = Compute_bias_corr_W(second_order, X_res_);
     
@@ -890,14 +890,13 @@ List Compute_bias_corr_probit(const NumericMatrix & Y, const List & X,
      
      NumericMatrix first_order = Compute_first_order_probit_with_LR(X, Y, beta, L, R);
      NumericMatrix second_order = Compute_second_order_probit_with_LR(X, Y, beta, L, R);
-     NumericMatrix third_order = Compute_third_order_probit_with_LR(X, Y, beta, L, R);
-     
+
      
      std::vector<std::vector<Eigen::MatrixXd>> X_res_ = Create_X_res(X, L, R, second_order);
      
-     NumericMatrix B = Compute_bias_corr_B(first_order, second_order, third_order,
+     NumericMatrix B = Compute_bias_corr_B_probit(beta, first_order, second_order,
                                            R, X_res_, truc);
-     NumericMatrix D = Compute_bias_corr_D(first_order, second_order, third_order,
+     NumericMatrix D = Compute_bias_corr_D_probit(beta, first_order, second_order,
                                            L, X_res_);
      NumericMatrix W = Compute_bias_corr_W(second_order, X_res_);
      
