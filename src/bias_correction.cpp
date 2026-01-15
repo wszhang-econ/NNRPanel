@@ -352,11 +352,13 @@ NumericMatrix Compute_bias_corr_V(const NumericMatrix & first_order,
             W_ = W_ + first_order(i, t) * first_order(i, t) * (X_res_[i][t] * X_res_[i][t].transpose());
         }
     }
+    /*
     for(int i=0; i!=N; i++){
         for(int t=0; t!=T; t++){
             W_ = W_ + first_order(i, t) * first_order(t, i) * (X_res_[i][t] * X_res_[t][i].transpose());
         }
     }
+     */
     
     W_ = W_ / N;
     W_ = W_ /T;

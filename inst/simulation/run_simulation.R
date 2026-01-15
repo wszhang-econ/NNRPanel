@@ -1,4 +1,7 @@
 library(NNRPanel)
+library(dplyr)
+library(fixest)
+library(doParallel)
 
 
 gen_factor <- function(N, T, num_factor, sigma = 1){
@@ -127,6 +130,56 @@ gen_data_dynamic_poisson <- function(N, T, num_factor, num_Z, num_W, beta_W, bet
             interact_f = L %*% t(R), 
             Y = Y, 
             X = X
+        )
+    )
+}
+
+
+gen_data_probit <- function(N, T, num_factor, num_Z, beta, sigma = 1){
+    index <- matrix(0, N, T)
+    list_factor <- gen_factor(N, T, num_factor, sigma)
+    L <- list_factor$L
+    R <- list_factor$R
+    Z <- gen_Z(N, T, num_Z, list_factor, sigma)
+    for (i in 1:num_Z){
+        index <- index + beta[i] * Z[[i]]
+    }
+    index <- index + L %*% t(R)
+    P <-  pnorm(index)  
+    epsilon <- runif(N*T) %>% matrix(N, T)
+    Y <- matrix(0, N, T)
+    Y[epsilon < P] <- 1
+    return(
+        list(
+            X = Z,
+            list_factor = list_factor, 
+            index = index, 
+            interact_f = L %*% t(R), 
+            Y = Y, 
+            P = P
+        )
+    )
+}
+
+gen_data_linear <- function(N, T, num_factor, num_Z, beta, sigma = 1){
+    index <- matrix(0, N, T)
+    list_factor <- gen_factor(N, T, num_factor, sigma)
+    L <- list_factor$L
+    R <- list_factor$R
+    Z <- gen_Z(N, T, num_Z, list_factor, sigma)
+    for (i in 1:num_Z){
+        index <- index + beta[i] * Z[[i]]
+    }
+    index <- index + L %*% t(R)
+    epsilon <- rnorm(N*T, 0, 1) %>% matrix(N, T)
+    Y <- index + epsilon
+    return(
+        list(
+            X = Z,
+            list_factor = list_factor, 
+            index = index, 
+            interact_f = L %*% t(R), 
+            Y = Y
         )
     )
 }
@@ -304,9 +357,6 @@ rearrange_result <- function(result, beta, num_X){
 
 
 
-library(dplyr)
-library(fixest)
-library(doParallel)
 
 set.seed(199505)
 
@@ -319,6 +369,180 @@ num_factor = 2
 beta = c(0.2)
 R_max = 5
 sim = 1000
+
+
+seed <- sample.int(100000, sim, replace = FALSE)
+
+N = 100
+T = 100
+
+myCluster <- makeCluster(detectCores()-1, type = "FORK")
+registerDoParallel(myCluster)
+raw_data <- foreach (k=1:sim) %dopar% {
+    set.seed(seed[k])
+    data <- gen_data_probit(N, T, num_factor, num_Z, beta)
+    
+    # Pool
+    Yvec <- data$Y %>% c() 
+    X1vec <- data$X[[1]]%>% c()
+    id <- rep(1:N, T) %>% matrix(N, T) %>% c()
+    time <- rep(1:T, N) %>% matrix(T, N) %>% t() %>% c()
+    df <- data.frame(Yvec, X1vec, id, time)
+    
+    X <- data$X
+    Y <- data$Y
+    
+    pool <- glm(Yvec ~ X1vec, data = df, family = binomial(link = "probit"))
+    
+    beta_pool <- pool$coefficients[-1]
+    beta_pool <- c(unlist(beta_pool))
+    print(beta_pool)
+    
+    # Compute tuning parameter
+    
+    TW_model <- feglm(Yvec ~ X1vec | id + time, family = binomial(link = "probit"), data = df)
+    Y_fit <- fitted(TW_model) %>% matrix(N, T)
+    phi <- SVD(Y -Y_fit)$sigma[1] * (1 + delta)
+    print(phi)
+    
+    nnr_fit = fit_probit(X, Y,  phi, 10, 300, 1e-8)
+    beta_nnr <-  nnr_fit$beta_est
+    
+    sigma <-  SVD(nnr_fit$Theta_est)$sigma
+    num_factor_est <- determine_num_factor(sigma, R_max)
+    
+    list_LR = Low_rank_appro(nnr_fit$Theta_est, num_factor);
+    L_0 = list_LR$L
+    R_0 = list_LR$R
+    beta_0 = beta_nnr
+    
+    fe_fit = MLE_probit(X, Y, beta_0, L_0, R_0, 10, 10000, 1e-8)
+    beta_fe <- fe_fit$beta_est
+    L_fe = fe_fit$L_est
+    R_fe = fe_fit$R_est
+    
+    
+    index <- Compute_index_with_LR(X, beta_fe, L_fe, R_fe)
+    P <-  pnorm(index)
+    phi <- SVD(Y -P)$sigma[1] * (1 + delta)
+    
+    
+    # NNR 
+    
+    nnr_fit = fit_probit(X, Y,  phi, 10, 300, 1e-8)
+    beta_nnr <-  nnr_fit$beta_est
+    print(beta_pool)
+    
+    # determine the number of factor
+    
+    sigma <-  SVD(nnr_fit$Theta_est)$sigma
+    num_factor_est <- determine_num_factor(sigma, R_max)
+    print(num_factor_est)
+    
+    # beta_fe with correct number of factor
+    
+    list_LR = Low_rank_appro(nnr_fit$Theta_est, num_factor);
+    L_0 = list_LR$L
+    R_0 = list_LR$R
+    beta_0 = beta_nnr
+    
+    fe_fit = MLE_probit(X, Y, beta_0, L_0, R_0, 10, 10000, 1e-8)
+    beta_fe <- fe_fit$beta_est
+    L_fe = fe_fit$L_est
+    R_fe = fe_fit$R_est
+    
+    # beta_fe analytical bias correction with correct number of factor
+    
+    bias_corr <- Compute_bias_corr_probit(Y, X, beta_fe, L_fe, R_fe, 0)
+    print(bias_corr)
+    beta_corr <- bias_corr$beta_corr
+    if(is.na(beta_corr[1])){
+        beta_corr <- beta_fe
+    }
+    std_beta_corr <- bias_corr$std_est
+    
+    # beta_fe sample splitting bias correction with correct number of factor
+    
+    data_sample_split <-  sample_split(data, L_0, R_0)
+    data_left <- data_sample_split$data_left
+    data_right <- data_sample_split$data_right
+    data_upper <- data_sample_split$data_upper
+    data_bottom <- data_sample_split$data_bottom
+    
+    fe_fit_left = MLE_probit(data_left$X, data_left$Y, beta_0, data_left$L, data_left$R, 10, 10000, 1e-8)
+    beta_fe_left <- fe_fit_left$beta_est
+    fe_fit_right = MLE_probit(data_right$X, data_right$Y, beta_0, data_right$L, data_right$R, 10, 10000, 1e-8)
+    beta_fe_right <- fe_fit_right$beta_est
+    fe_fit_upper = MLE_probit(data_upper$X, data_upper$Y, beta_0, data_upper$L, data_upper$R, 10, 10000, 1e-8)
+    beta_fe_upper <- fe_fit_upper$beta_est
+    fe_fit_bottom = MLE_probit(data_bottom$X, data_bottom$Y, beta_0, data_bottom$L, data_bottom$R, 10, 10000, 1e-8)
+    beta_fe_bottom <- fe_fit_bottom$beta_est
+    
+    beta_corr_sp <- 3* beta_fe - (beta_fe_left + beta_fe_right + beta_fe_upper + beta_fe_bottom)/2
+    
+    
+    # beta_fe with number of factor (data_driven)
+    
+    list_LR = Low_rank_appro(nnr_fit$Theta_est, num_factor_est);
+    L_0 = list_LR$L
+    R_0 = list_LR$R
+    beta_0 = beta_nnr
+    if (num_factor_est==0){
+        L_0 <- matrix(0, N, 1)
+        R_0 <- matrix(0, T, 1)
+    }
+    
+    fe_fit_data = MLE_probit(X, Y, beta_0, L_0, R_0, 10, 10000, 1e-8)
+    beta_fe_data <- fe_fit_data$beta_est
+    L_fe_data = fe_fit_data$L_est
+    R_fe_data = fe_fit_data$R_est
+    
+    # beta_fe analytical bias correction with number of factor (data_driven)
+    bias_corr_data <- Compute_bias_corr_probit(Y, X, beta_fe_data, L_fe_data, R_fe_data, 0)
+    beta_corr_data <- bias_corr_data$beta_corr
+    if(is.na(beta_corr_data[1])){
+        beta_corr_data <- beta_fe_data
+    }
+    std_beta_corr_data <- bias_corr_data$std_est
+    
+    # beta_fe sample splitting bias correction with number of factor (data_driven)
+    
+    data_sample_split <-  sample_split(data, L_0, R_0)
+    data_left <- data_sample_split$data_left
+    data_right <- data_sample_split$data_right
+    data_upper <- data_sample_split$data_upper
+    data_bottom <- data_sample_split$data_bottom
+    
+    fe_fit_left = MLE_probit(data_left$X, data_left$Y, beta_0, data_left$L, data_left$R, 10, 10000, 1e-8)
+    beta_fe_left_data <- fe_fit_left$beta_est
+    fe_fit_right = MLE_probit(data_right$X, data_right$Y, beta_0, data_right$L, data_right$R, 10, 10000, 1e-8)
+    beta_fe_right_data <- fe_fit_right$beta_est
+    fe_fit_upper = MLE_probit(data_upper$X, data_upper$Y, beta_0, data_upper$L, data_upper$R, 10, 10000, 1e-8)
+    beta_fe_upper_data <- fe_fit_upper$beta_est
+    fe_fit_bottom = MLE_probit(data_bottom$X, data_bottom$Y, beta_0, data_bottom$L, data_bottom$R, 10, 10000, 1e-8)
+    beta_fe_bottom_data <- fe_fit_bottom$beta_est
+    
+    beta_corr_sp_data <- 3* beta_fe_data - (beta_fe_left_data + beta_fe_right_data + beta_fe_upper_data + beta_fe_bottom_data)/2
+    
+    
+    
+    result <- list(
+        beta_pool = beta_pool,
+        beta_nnr = beta_nnr,
+        num_factor_est = num_factor_est,
+        beta_fe = beta_fe,
+        beta_corr = beta_corr,
+        beta_corr_sp = beta_corr_sp,
+        std_beta_corr = std_beta_corr,
+        beta_fe_data = beta_fe_data, 
+        beta_corr_data = beta_corr_data, 
+        beta_corr_sp_data = beta_corr_sp_data,
+        std_beta_corr_data = std_beta_corr_data)
+}
+stopCluster(myCluster)    
+summary_le_50_40 <- rearrange_result(raw_data, beta, num_X)
+
+
 
 
 seed <- sample.int(100000, sim, replace = FALSE)
@@ -404,7 +628,7 @@ raw_data <- foreach (k=1:sim) %dopar% {
     
     # beta_fe analytical bias correction with correct number of factor
     
-    bias_corr <- Compute_bias_corr_logit_robust(Y, X, beta_fe, L_fe, R_fe, 0)
+    bias_corr <- Compute_bias_corr_logit(Y, X, beta_fe, L_fe, R_fe, 0)
     print(bias_corr)
     beta_corr <- bias_corr$beta_corr
     if(is.na(beta_corr[1])){
